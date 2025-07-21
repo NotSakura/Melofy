@@ -11,12 +11,23 @@ class ExplorePage extends StatefulWidget {
 class _ExplorePageState extends State<ExplorePage> {
   String searchText = '';
 
-  final List<String> imagePaths = [
-    'assets/images/moodboard1.jpg',
-    'assets/images/moodboard2.jpg',
-    'assets/images/moodboard3.png',
-    'assets/images/moodboard4.jpg',
-    'assets/images/moodboard5.jpg',
+  final List<String> moodboardImagePaths = [
+    'assets/images/explorePage/moodboard1.jpg',
+    'assets/images/explorePage/moodboard2.jpg',
+    'assets/images/explorePage/moodboard3.png',
+    'assets/images/explorePage/moodboard4.jpg',
+    'assets/images/explorePage/moodboard5.jpg',
+  ];
+
+  final List<String> collectionsImagePaths = [
+    'assets/images/explorePage/collection1.jpg',
+    'assets/images/explorePage/collection2.jpg',
+    'assets/images/explorePage/collection3.jpg',
+    'assets/images/explorePage/collection4.jpg',
+    'assets/images/explorePage/collection5.jpg',
+    'assets/images/explorePage/collection6.jpg',
+    'assets/images/explorePage/collection7.jpg',
+    'assets/images/explorePage/collection8.jpg',
   ];
 
   @override
@@ -58,7 +69,7 @@ class _ExplorePageState extends State<ExplorePage> {
               searchText.isEmpty
                   ? 'Trending Moodboards'
                   : 'Searching for: "$searchText"',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
 
@@ -82,7 +93,7 @@ class _ExplorePageState extends State<ExplorePage> {
                       margin: const EdgeInsets.only(right: 8),
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage(imagePaths[index]),
+                          image: AssetImage(moodboardImagePaths[index]),
                           fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.circular(12),
@@ -102,11 +113,56 @@ class _ExplorePageState extends State<ExplorePage> {
 
             const SizedBox(height: 16),
 
-            ElevatedButton(
-              onPressed: () {
-                // Button action
-              },
-              child: const Text('Click Me'),
+            Text(
+              'Recommended Collections',
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+
+            // Expanded grid with 2 columns and vertical scroll
+            Expanded(
+              child: GridView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 0),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, // two columns
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  childAspectRatio: 1, // square items
+                ),
+                itemCount: 8, // 4 rows * 2 columns
+                itemBuilder: (context, index) {
+                  final imageIndex =
+                      index %
+                      collectionsImagePaths.length; // repeat images if needed
+                  return InkWell(
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const TrendingMoodboard1(),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(collectionsImagePaths[imageIndex]),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 4,
+                            offset: Offset(2, 2),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         ),
