@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/home.dart';
+import 'screens/select_media_screen.dart';
 
 void main() => runApp(const MelofyApp());
 
@@ -11,6 +12,10 @@ class MelofyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: const HomeScreen(),
+      routes: {
+        '/select-media': (context) => const SelectMediaScreen(),
+        // '/moodboard': (context) => const MoodboardScreen(),
+      },
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.black,
       ),

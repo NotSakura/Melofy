@@ -19,11 +19,12 @@ class CreateModal extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _ModalOption(
-                icon: Icons.post_add,
+                icon: Icons.photo_library,
                 label: 'Media Post',
                 onTap: () {
+                    print('Media Post tapped');
                   Navigator.pop(context);
-                  // TODO: Navigate to Media Post screen
+                  Navigator.pushNamed(context, '/select-media');
                 },
               ),
               _ModalOption(
@@ -56,7 +57,7 @@ class _ModalOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: onTap, 
       child: Column(
         children: [
           Container(

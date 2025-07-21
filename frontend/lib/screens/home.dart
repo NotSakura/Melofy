@@ -38,50 +38,51 @@ class HomeScreen extends StatelessWidget {
   ];
 
   void _showCreateModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: const Color(0xFF2B2B2B),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (_) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Create a new…',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _ModalOption(
-                    icon: Icons.post_add,
-                    label: 'Media Post',
-                    onTap: () {
-                      Navigator.pop(context);
-                      // TODO: Navigate to Media Post screen
-                    },
-                  ),
-                  _ModalOption(
-                    icon: Icons.grid_view,
-                    label: 'Moodboard',
-                    onTap: () {
-                      Navigator.pop(context);
-                      // TODO: Navigate to Moodboard screen
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: const Color(0xFF2B2B2B),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (_) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Create a new…',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _ModalOption(
+                  icon: Icons.post_add,
+                  label: 'Media Post',
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, '/select-media');
+                  },
+                ),
+                _ModalOption(
+                  icon: Icons.grid_view,
+                  label: 'Moodboard',
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, '/moodboard');
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
