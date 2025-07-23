@@ -16,6 +16,13 @@ class SongScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Shared button style for both buttons
+    final ButtonStyle deepPurpleStyle = ElevatedButton.styleFrom(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      backgroundColor: Colors.deepPurple.shade300,
+      foregroundColor: Colors.white,
+    );
+
     return Scaffold(
       appBar: AppBar(title: const Text('Song Details')),
       body: SingleChildScrollView(
@@ -55,7 +62,6 @@ class SongScreen extends StatelessWidget {
                 style: const TextStyle(fontSize: 20),
                 textAlign: TextAlign.center,
               ),
-
               const SizedBox(height: 15),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -63,12 +69,7 @@ class SongScreen extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 12,
-                        ),
-                      ),
+                      style: deepPurpleStyle,
                       child: const Text(
                         'Play',
                         style: TextStyle(fontSize: 14),
@@ -80,12 +81,7 @@ class SongScreen extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 12,
-                        ),
-                      ),
+                      style: deepPurpleStyle,
                       child: const Text(
                         'Add to Moodboard',
                         style: TextStyle(fontSize: 14),
@@ -95,14 +91,12 @@ class SongScreen extends StatelessWidget {
                   ),
                 ],
               ),
-
               const SizedBox(height: 15),
               Text(
                 "Genre: $genre",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20),
               ),
-
               const SizedBox(height: 15),
               const Text(
                 "Streaming Options",

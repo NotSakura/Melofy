@@ -50,7 +50,7 @@ class MoodboardPage extends StatelessWidget {
                   .map(
                     (tag) => Chip(
                       label: Text(tag),
-                      backgroundColor: Colors.black54,
+                      backgroundColor: Colors.deepPurple.shade300,
                       labelStyle: const TextStyle(color: Colors.white),
                     ),
                   )
