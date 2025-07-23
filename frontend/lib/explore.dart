@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'trendingMoodboard1.dart';
+import 'moodboards/trendingMoodboard1.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
