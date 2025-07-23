@@ -13,13 +13,13 @@ class TrendingMoodboard1 extends StatelessWidget {
         'title': "That's So True",
         'artist': "Gracie Abrams",
         'genre': "Pop",
-        'imagePath': 'assets/images/track1.jpg',
+        'imagePath': 'assets/images/createMoodboardPage/ThatsSoTrue.jpeg',
       },
       {
         'title': "Dreamscape Drive",
         'artist': "Lana Sky",
         'genre': "Indie",
-        'imagePath': 'assets/images/track2.jpg',
+        'imagePath': 'assets/images/explorePage/collection1.jpg',
       },
       // Add more songs as needed
     ];

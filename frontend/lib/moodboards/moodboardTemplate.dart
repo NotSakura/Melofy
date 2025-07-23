@@ -20,34 +20,30 @@ class MoodboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text(title),
         actions: [
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () {
-              // Add share functionality
+              // Add share functionality here
             },
           ),
         ],
       ),
+
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              title,
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
               description,
               style: const TextStyle(fontSize: 16, color: Colors.black87),
             ),
+
             const SizedBox(height: 16),
+
             Wrap(
               spacing: 8,
               children: tags
@@ -60,28 +56,43 @@ class MoodboardPage extends StatelessWidget {
                   )
                   .toList(),
             ),
+
             const SizedBox(height: 24),
+
             const Text(
-              "Tracks",
+              'Tracks',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
+
             const SizedBox(height: 12),
+
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
-                children: imagePaths
-                    .map(
-                      (path) => GestureDetector(
-                        onTap: () => onTrackTap(path),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Image.asset(path, fit: BoxFit.cover),
+                children: imagePaths.map((path) {
+                  return InkWell(
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: () => onTrackTap(path),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        image: DecorationImage(
+                          image: AssetImage(path),
+                          fit: BoxFit.cover,
                         ),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 4,
+                            offset: Offset(2, 2),
+                          ),
+                        ],
                       ),
-                    )
-                    .toList(),
+                    ),
+                  );
+                }).toList(),
               ),
             ),
           ],
