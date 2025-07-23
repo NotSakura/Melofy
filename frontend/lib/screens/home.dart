@@ -6,32 +6,32 @@ class HomeScreen extends StatelessWidget {
 
   final List<Map<String, String>> posts = const [
     {
-      'image': 'https://i.imgur.com/fdVZVYZ.png',
-      'title': 'Wonderland',
+      'image': 'lib/assets/images/Wonderland.jpg',
+      'title': "Wonderland",
       'artist': 'Taylor Swift'
     },
     {
-      'image': 'https://i.imgur.com/UuUOQoB.png',
+      'image': 'lib/assets/images/ThatsSoTrue.jpg',
       'title': "That's so true",
       'artist': 'Gracie Abrams'
     },
     {
-      'image': 'https://i.imgur.com/J0jK6cK.png',
+      'image': 'lib/assets/images/MidnightSerenade.jpg',
       'title': 'Midnight Serenade',
       'artist': 'Luna Harmony'
     },
     {
-      'image': 'https://i.imgur.com/TvEQZmT.png',
+      'image': 'lib/assets/images/Reflections.jpg',
       'title': 'Reflections',
       'artist': 'The Neighbourhood'
     },
     {
-      'image': 'https://i.imgur.com/tlY9fgQ.png',
+      'image': 'lib/assets/images/Dreamlight.jpg',
       'title': 'Dreamlight',
       'artist': 'Various Artists'
     },
     {
-      'image': 'https://i.imgur.com/yBJWvmO.png',
+      'image': 'lib/assets/images/AuraEchoes.jpg',
       'title': 'Aura Echoes',
       'artist': 'Echo Bloom'
     },
