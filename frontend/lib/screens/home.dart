@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/explore.dart';
 import '../widgets/moodboard_card.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -8,81 +9,84 @@ class HomeScreen extends StatelessWidget {
     {
       'image': 'https://i.imgur.com/fdVZVYZ.png',
       'title': 'Wonderland',
-      'artist': 'Taylor Swift'
+      'artist': 'Taylor Swift',
     },
     {
       'image': 'https://i.imgur.com/UuUOQoB.png',
       'title': "That's so true",
-      'artist': 'Gracie Abrams'
+      'artist': 'Gracie Abrams',
     },
     {
       'image': 'https://i.imgur.com/J0jK6cK.png',
       'title': 'Midnight Serenade',
-      'artist': 'Luna Harmony'
+      'artist': 'Luna Harmony',
     },
     {
       'image': 'https://i.imgur.com/TvEQZmT.png',
       'title': 'Reflections',
-      'artist': 'The Neighbourhood'
+      'artist': 'The Neighbourhood',
     },
     {
       'image': 'https://i.imgur.com/tlY9fgQ.png',
       'title': 'Dreamlight',
-      'artist': 'Various Artists'
+      'artist': 'Various Artists',
     },
     {
       'image': 'https://i.imgur.com/yBJWvmO.png',
       'title': 'Aura Echoes',
-      'artist': 'Echo Bloom'
+      'artist': 'Echo Bloom',
     },
   ];
 
   void _showCreateModal(BuildContext context) {
-  showModalBottomSheet(
-    context: context,
-    backgroundColor: const Color(0xFF2B2B2B),
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-    ),
-    builder: (_) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              'Create a new…',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _ModalOption(
-                  icon: Icons.post_add,
-                  label: 'Media Post',
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.pushNamed(context, '/select-media');
-                  },
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF2B2B2B),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Create a new…',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
                 ),
-                _ModalOption(
-                  icon: Icons.grid_view,
-                  label: 'Moodboard',
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.pushNamed(context, '/moodboard');
-                  },
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
-    },
-  );
-}
-
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _ModalOption(
+                    icon: Icons.post_add,
+                    label: 'Media Post',
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, '/select-media');
+                    },
+                  ),
+                  _ModalOption(
+                    icon: Icons.grid_view,
+                    label: 'Moodboard',
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, '/moodboard');
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,15 +128,26 @@ class HomeScreen extends StatelessWidget {
         unselectedItemColor: Colors.white38,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
+          if (index == 1) {
+            // User tapped the second tab (search icon)
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ExplorePage()),
+            );
+          }
           if (index == 2) {
             _showCreateModal(context); // Show modal when "+" is tapped
           }
         },
+
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.add_box), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications_none), label: ''),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications_none),
+            label: '',
+          ),
           BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ''),
         ],
       ),
