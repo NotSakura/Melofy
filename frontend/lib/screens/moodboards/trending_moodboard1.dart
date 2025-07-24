@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'moodboard-template.dart';
-import '../songScreen.dart';
+import 'moodboard_template.dart';
+import '../song_screen.dart';
 
 class TrendingMoodboard1 extends StatelessWidget {
   const TrendingMoodboard1({super.key});

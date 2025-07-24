@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/create_moodboard_screen.dart';
 import 'package:frontend/screens/explore.dart';
 import '../widgets/moodboard_card.dart';
 
@@ -75,8 +76,14 @@ class HomeScreen extends StatelessWidget {
                     icon: Icons.grid_view,
                     label: 'Moodboard',
                     onTap: () {
-                      Navigator.pop(context);
-                      Navigator.pushNamed(context, '/moodboard');
+                      // Navigator.pop(context);
+                      // Navigator.pushNamed(context, '/moodboard');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CreateMoodboardPage(),
+                        ),
+                      );
                     },
                   ),
                 ],

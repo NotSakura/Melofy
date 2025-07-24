@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../screens/moodboards/trending-moodboard1.dart';
+import 'moodboards/trending_moodboard1.dart';
 
 const String basePath = 'assets/images/explorePage/';
 

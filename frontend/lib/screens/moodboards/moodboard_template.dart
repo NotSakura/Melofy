@@ -37,10 +37,7 @@ class MoodboardPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              description,
-              style: const TextStyle(fontSize: 16, color: Colors.black87),
-            ),
+            Text(description, style: const TextStyle(fontSize: 16)),
 
             const SizedBox(height: 16),
 
