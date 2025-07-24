@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../theme_provider.dart'; // Make sure to import your ThemeProvider
 import 'moodboards/trending_moodboard1.dart';
 
 const String basePath = 'assets/images/explorePage/';
@@ -37,6 +39,14 @@ class _ExplorePageState extends State<ExplorePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Moodboard"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.wb_sunny),
+            onPressed: () {
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+            },
+          ),
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(50),
           child: Padding(
@@ -74,8 +84,6 @@ class _ExplorePageState extends State<ExplorePage> {
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-
-            // Horizontal scrollable row of image buttons
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -112,30 +120,24 @@ class _ExplorePageState extends State<ExplorePage> {
                 }),
               ),
             ),
-
             const SizedBox(height: 16),
-
             Text(
               'Recommended Collections',
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-
-            // Expanded grid with 2 columns and vertical scroll
             Expanded(
               child: GridView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 0),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // two columns
+                  crossAxisCount: 2,
                   mainAxisSpacing: 16,
                   crossAxisSpacing: 16,
-                  childAspectRatio: 1, // square items
+                  childAspectRatio: 1,
                 ),
-                itemCount: 8, // 4 rows * 2 columns
+                itemCount: 8,
                 itemBuilder: (context, index) {
-                  final imageIndex =
-                      index %
-                      collectionsImagePaths.length; // repeat images if needed
+                  final imageIndex = index % collectionsImagePaths.length;
                   return InkWell(
                     borderRadius: BorderRadius.circular(12),
                     onTap: () {
