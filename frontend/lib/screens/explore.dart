@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../theme_provider.dart'; // Make sure to import your ThemeProvider
+import '../theme_provider.dart';
 import 'moodboards/trending_moodboard1.dart';
 
 const String basePath = 'assets/images/explorePage/';

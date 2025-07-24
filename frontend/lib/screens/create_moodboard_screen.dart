@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../theme_provider.dart';
 
 class CreateMoodboardPage extends StatefulWidget {
   const CreateMoodboardPage({super.key});
@@ -13,7 +15,17 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Create New Moodboard")),
+      appBar: AppBar(
+        title: const Text("Create New Moodboard"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.wb_sunny),
+            onPressed: () {
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           // Wraps body content to avoid overflow

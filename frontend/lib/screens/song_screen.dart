@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../theme_provider.dart';
 
 class SongScreen extends StatelessWidget {
   final String title;
@@ -24,7 +26,17 @@ class SongScreen extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Song Details')),
+      appBar: AppBar(
+        title: const Text("Song Details"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.wb_sunny),
+            onPressed: () {
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+            },
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Center(
