@@ -103,15 +103,11 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                     Text(
                       'Saved Moodboards',
                       style: TextStyle(
-                        color: Colors.black,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(
-                      'See more >',
-                      style: TextStyle(color: Colors.black54, fontSize: 12),
-                    ),
+                    Text('See more >', style: TextStyle(fontSize: 12)),
                   ],
                 ),
 
