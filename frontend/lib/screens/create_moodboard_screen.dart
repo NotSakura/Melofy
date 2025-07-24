@@ -36,8 +36,10 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
               children: [
                 // Title input TextField
                 TextField(
+                  style: const TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                     hintText: 'Moodboard Title',
+                    hintStyle: const TextStyle(color: Colors.black54),
                     fillColor: Colors.white,
                     filled: true,
                     border: OutlineInputBorder(
