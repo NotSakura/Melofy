@@ -1,25 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/createMoodboard.dart';
 import 'explore.dart';
+import 'screens/home.dart';
+import 'screens/select_media_screen.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const MelofyApp());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MelofyApp extends StatelessWidget {
+  const MelofyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+Widget build(BuildContext context) {
+  return MaterialApp(
+    title: 'Flutter Demo',
+    debugShowCheckedModeBanner: false,
+    home: const HomeScreen(),
+    routes: {
+      '/select-media': (context) => const SelectMediaScreen(),
+      // '/moodboard': (context) => const MoodboardScreen(),
+    },
+    theme: ThemeData.dark().copyWith(
+      scaffoldBackgroundColor: Colors.black,
+      colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+    ),
+  );
 }
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
