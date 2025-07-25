@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'song_details_page.dart';
 import 'package:frontend/screens/create_moodboard_screen.dart';
 import 'package:frontend/screens/explore.dart';
-import '../widgets/moodboard_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -12,99 +11,114 @@ class HomeScreen extends StatelessWidget {
       'image': 'lib/assets/images/Wonderland.jpg',
       'title': 'Wonderland (Taylor’s Version)',
       'artist': 'Taylor Swift',
-      'cover': 'lib/assets/images/Wonderland.jpg',
+      'cover': 'lib/assets/images/Wonderland.jpg'
     },
     {
       'image': 'lib/assets/images/ThatsSoTrue.jpg',
       'title': "That's so true",
       'artist': 'Gracie Abrams',
-      'cover': 'lib/assets/images/ThatsSoTrue.jpg',
+      'cover': 'lib/assets/images/ThatsSoTrue.jpg'
     },
     {
       'image': 'lib/assets/images/MidnightSerenade.jpg',
       'title': 'Midnight Serenade',
       'artist': 'Luna Harmony',
-      'cover': 'lib/assets/images/MidnightSerenade.jpg',
+      'cover': 'lib/assets/images/MidnightSerenade.jpg'
     },
     {
       'image': 'lib/assets/images/Reflections.jpg',
       'title': 'Reflections',
       'artist': 'The Neighbourhood',
-      'cover': 'lib/assets/images/Reflections.jpg',
+      'cover': 'lib/assets/images/Reflections.jpg'
     },
     {
       'image': 'lib/assets/images/Dreamlight.jpg',
       'title': 'Dreamlight',
       'artist': 'Various Artists',
-      'cover': 'lib/assets/images/Dreamlight.jpg',
+      'cover': 'lib/assets/images/Dreamlight.jpg'
     },
     {
       'image': 'lib/assets/images/AuraEchoes.jpg',
       'title': 'Aura Echoes',
       'artist': 'Echo Bloom',
-      'cover': 'lib/assets/images/AuraEchoes.jpg',
+      'cover': 'lib/assets/images/AuraEchoes.jpg'
     },
   ];
 
-
-
-  void _showCreateModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: const Color(0xFF2B2B2B),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (_) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Create a new…',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+  void _onNavTap(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        // Already on Home
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ExplorePage()),
+        );
+        break;
+      case 2:
+        showModalBottomSheet(
+          context: context,
+          backgroundColor: const Color(0xFF2B2B2B),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          builder: (_) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  _ModalOption(
-                    icon: Icons.post_add,
-                    label: 'Media Post',
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.pushNamed(context, '/select-media');
-                    },
+                  const Text(
+                    'Create a new…',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
                   ),
-                  _ModalOption(
-                    icon: Icons.grid_view,
-                    label: 'Moodboard',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const CreateMoodboardPage(),
-                        ),
-                      );
-                    },
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _ModalOption(
+                        icon: Icons.post_add,
+                        label: 'Media Post',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, '/select-media');
+                        },
+                      ),
+                      _ModalOption(
+                        icon: Icons.grid_view,
+                        label: 'Moodboard',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CreateMoodboardPage(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
+            );
+          },
         );
-      },
-    );
+        break;
+      default:
+        break;
+    }
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text(
@@ -118,50 +132,51 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(12),
-        itemCount: posts.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 14,
-          crossAxisSpacing: 14,
-          childAspectRatio: 0.8,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Wrap(
+            spacing: 14,
+            runSpacing: 14,
+            children: posts.map((post) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SongDetailsPage(
+                        title: post['title']!,
+                        artist: post['artist']!,
+                        coverImage: post['cover']!,
+                      ),
+                    ),
+                  );
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset(
+                    post['image']!,
+                    fit: BoxFit.cover,
+                    width: MediaQuery.of(context).size.width / 2 - 20,
+                    height: MediaQuery.of(context).size.width / 2 - 20,
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
         ),
-        itemBuilder: (context, index) {
-          final post = posts[index];
-          return MoodboardCard(
-            imageUrl: post['image']!,
-            title: post['title']!,
-            artist: post['artist']!,
-          );
-        },
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.black,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white38,
         type: BottomNavigationBarType.fixed,
-        onTap: (index) {
-          if (index == 1) {
-            // User tapped the second tab (search icon)
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ExplorePage()),
-            );
-          }
-          if (index == 2) {
-            _showCreateModal(context); // Show modal when "+" is tapped
-          }
-        },
-
+        onTap: (index) => _onNavTap(context, index),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.add_box), label: ''),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_none),
-            label: '',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.notifications_none), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ''),
         ],
       ),
