@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'moodboards/trending_moodboard1.dart';
 
-const String basePath = 'assets/images/explorePage/';
+const String basePath = 'assets/images/explore_page/';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
