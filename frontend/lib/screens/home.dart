@@ -8,40 +8,40 @@ class HomeScreen extends StatelessWidget {
 
   static const List<Map<String, String>> posts = [
     {
-      'image': 'lib/assets/images/Wonderland.jpg',
+      'image': 'assets/images/homepage/Wonderland.jpg',
       'title': 'Wonderland (Taylor’s Version)',
       'artist': 'Taylor Swift',
-      'cover': 'lib/assets/images/Wonderland.jpg'
+      'cover': 'assets/images/homepage/Wonderland.jpg'
     },
     {
-      'image': 'lib/assets/images/ThatsSoTrue.jpg',
+      'image': 'assets/images/homepage/ThatsSoTrue.jpg',
       'title': "That's so true",
       'artist': 'Gracie Abrams',
-      'cover': 'lib/assets/images/ThatsSoTrue.jpg'
+      'cover': 'assets/images/homepage/ThatsSoTrue.jpg'
     },
     {
-      'image': 'lib/assets/images/MidnightSerenade.jpg',
+      'image': 'assets/images/homepage/MidnightSerenade.jpg',
       'title': 'Midnight Serenade',
       'artist': 'Luna Harmony',
-      'cover': 'lib/assets/images/MidnightSerenade.jpg'
+      'cover': 'assets/images/homepage/MidnightSerenade.jpg'
     },
     {
-      'image': 'lib/assets/images/Reflections.jpg',
+      'image': 'assets/images/homepage/Reflections.jpg',
       'title': 'Reflections',
       'artist': 'The Neighbourhood',
-      'cover': 'lib/assets/images/Reflections.jpg'
+      'cover': 'assets/images/homepage/Reflections.jpg'
     },
     {
-      'image': 'lib/assets/images/Dreamlight.jpg',
+      'image': 'assets/images/homepage/Dreamlight.jpg',
       'title': 'Dreamlight',
       'artist': 'Various Artists',
-      'cover': 'lib/assets/images/Dreamlight.jpg'
+      'cover': 'assets/images/homepage/Dreamlight.jpg'
     },
     {
-      'image': 'lib/assets/images/AuraEchoes.jpg',
+      'image': 'assets/images/homepage/AuraEchoes.jpg',
       'title': 'Aura Echoes',
       'artist': 'Echo Bloom',
-      'cover': 'lib/assets/images/AuraEchoes.jpg'
+      'cover': 'assets/images/homepage/AuraEchoes.jpg'
     },
   ];
 
