@@ -74,12 +74,14 @@ class SongDetailsPage extends StatelessWidget {
                     // Your logic for adding to moodboard
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.purple[300],
+                    backgroundColor: const Color.fromARGB(255, 182, 138, 209),
+                    foregroundColor: const Color.fromARGB(255, 0, 0, 0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                   child: const Text("Add to Moodboard"),
+                  
                 ),
               ],
             ),
