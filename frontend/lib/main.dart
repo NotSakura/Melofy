@@ -14,7 +14,6 @@ class MelofyApp extends StatelessWidget {
       home: const HomeScreen(),
       routes: {
         '/select-media': (context) => const SelectMediaScreen(),
-        // '/moodboard': (context) => const MoodboardScreen(),
       },
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.black,

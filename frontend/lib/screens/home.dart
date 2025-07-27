@@ -1,118 +1,167 @@
 import 'package:flutter/material.dart';
-import 'song_details_page.dart';
-import 'package:frontend/screens/create_moodboard_screen.dart';
 import 'package:frontend/screens/explore.dart';
+import 'package:frontend/screens/create_moodboard_screen.dart';
+import 'song_details_page.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
 
   static const List<Map<String, String>> posts = [
     {
       'image': 'assets/images/homepage/Wonderland.jpg',
       'title': 'Wonderland (Taylor’s Version)',
       'artist': 'Taylor Swift',
-      'cover': 'assets/images/homepage/Wonderland.jpg'
+      'cover': 'assets/images/homepage/Wonderland.jpg',
     },
     {
       'image': 'assets/images/homepage/ThatsSoTrue.jpg',
       'title': "That's so true",
       'artist': 'Gracie Abrams',
-      'cover': 'assets/images/homepage/ThatsSoTrue.jpg'
+      'cover': 'assets/images/homepage/ThatsSoTrue.jpg',
     },
     {
       'image': 'assets/images/homepage/MidnightSerenade.jpg',
       'title': 'Midnight Serenade',
       'artist': 'Luna Harmony',
-      'cover': 'assets/images/homepage/MidnightSerenade.jpg'
+      'cover': 'assets/images/homepage/MidnightSerenade.jpg',
     },
     {
       'image': 'assets/images/homepage/Reflections.jpg',
       'title': 'Reflections',
       'artist': 'The Neighbourhood',
-      'cover': 'assets/images/homepage/Reflections.jpg'
+      'cover': 'assets/images/homepage/Reflections.jpg',
     },
     {
       'image': 'assets/images/homepage/Dreamlight.jpg',
       'title': 'Dreamlight',
       'artist': 'Various Artists',
-      'cover': 'assets/images/homepage/Dreamlight.jpg'
+      'cover': 'assets/images/homepage/Dreamlight.jpg',
     },
     {
       'image': 'assets/images/homepage/AuraEchoes.jpg',
       'title': 'Aura Echoes',
       'artist': 'Echo Bloom',
-      'cover': 'assets/images/homepage/AuraEchoes.jpg'
+      'cover': 'assets/images/homepage/AuraEchoes.jpg',
     },
   ];
 
-  void _onNavTap(BuildContext context, int index) {
-    switch (index) {
+  void _onNavTap(int index) {
+    if (index == 2) {
+      _showCreateModal(context);
+      return;
+    }
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  Widget _getBody() {
+    switch (_selectedIndex) {
       case 0:
-        // Already on Home
-        break;
+        return _buildHomePage();
       case 1:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const ExplorePage()),
-        );
-        break;
-      case 2:
-        showModalBottomSheet(
-          context: context,
-          backgroundColor: const Color(0xFF2B2B2B),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          builder: (_) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    'Create a new…',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
+        return const ExplorePage();
+      default:
+        return _buildHomePage();
+    }
+  }
+
+  Widget _buildHomePage() {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Wrap(
+          spacing: 14,
+          runSpacing: 14,
+          children: posts.map((post) {
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SongDetailsPage(
+                      title: post['title']!,
+                      artist: post['artist']!,
+                      coverImage: post['cover']!,
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _ModalOption(
-                        icon: Icons.post_add,
-                        label: 'Media Post',
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.pushNamed(context, '/select-media');
-                        },
-                      ),
-                      _ModalOption(
-                        icon: Icons.grid_view,
-                        label: 'Moodboard',
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const CreateMoodboardPage(),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
+                );
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.asset(
+                  post['image']!,
+                  fit: BoxFit.cover,
+                  width: MediaQuery.of(context).size.width / 2 - 20,
+                  height: MediaQuery.of(context).size.width / 2 - 20,
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+
+  void _showCreateModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF2B2B2B),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Create a new…',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _ModalOption(
+                    icon: Icons.post_add,
+                    label: 'Media Post',
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, '/select-media');
+                    },
+                  ),
+                  _ModalOption(
+                    icon: Icons.grid_view,
+                    label: 'Moodboard',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CreateMoodboardPage(),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
-            );
-          },
+            ],
+          ),
         );
-        break;
-      default:
-        break;
-    }
+      },
+    );
   }
 
   @override
@@ -132,46 +181,14 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Wrap(
-            spacing: 14,
-            runSpacing: 14,
-            children: posts.map((post) {
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SongDetailsPage(
-                        title: post['title']!,
-                        artist: post['artist']!,
-                        coverImage: post['cover']!,
-                      ),
-                    ),
-                  );
-                },
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.asset(
-                    post['image']!,
-                    fit: BoxFit.cover,
-                    width: MediaQuery.of(context).size.width / 2 - 20,
-                    height: MediaQuery.of(context).size.width / 2 - 20,
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-        ),
-      ),
+      body: _getBody(),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
         backgroundColor: Colors.black,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white38,
         type: BottomNavigationBarType.fixed,
-        onTap: (index) => _onNavTap(context, index),
+        onTap: _onNavTap,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
