@@ -119,12 +119,12 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                     scrollDirection: Axis.horizontal,
                     children: [
                       _buildImageCard(
-                        'assets/images/createMoodboardPage/1989TV_Cover.webp',
+                        'assets/images/create_moodboard_page/1989TV_Cover.webp',
                         'Wonderland',
                         'Taylor Swift',
                       ),
                       _buildImageCard(
-                        'assets/images/createMoodboardPage/ThatsSoTrue.jpeg',
+                        'assets/images/create_moodboard_page/ThatsSoTrue.jpeg',
                         'That’s so true',
                         'Gracie Abrams',
                       ),
