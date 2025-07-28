@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../theme_provider.dart';
 import 'moodboards/trending_moodboard1.dart';
+import 'package:frontend/widgets/bottom_nav_bar.dart';
 
 const String basePath = 'assets/images/explorePage/';
 
@@ -171,6 +172,7 @@ class _ExplorePageState extends State<ExplorePage> {
           ],
         ),
       ),
+      bottomNavigationBar: BottomNavBar(currentIndex: 1),
     );
   }
 }
