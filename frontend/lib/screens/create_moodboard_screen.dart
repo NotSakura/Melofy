@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/widgets/bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 import '../theme_provider.dart';
 import '../screens/moodboards/moodboard_template.dart';
@@ -204,6 +205,7 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
           ),
         ),
       ),
+      bottomNavigationBar: BottomNavBar(currentIndex: 1),
     );
   }
 }
