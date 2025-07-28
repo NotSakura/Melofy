@@ -15,13 +15,46 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
   final TextEditingController _descriptionController = TextEditingController();
 
   List<String> selectedTags = ['Chill', 'Indie'];
-  List<String> selectedImages = [
-    'assets/images/create_moodboard_page/1989TV_Cover.webp',
-    'assets/images/create_moodboard_page/ThatsSoTrue.jpeg',
-    'assets/images/create_moodboard_page/BlindingLights.png',
+
+  // List of saved songs with details
+  final List<Map<String, String>> savedSongs = [
+    {
+      'imagePath': 'assets/images/create_moodboard_page/1989TV_Cover.webp',
+      'title': 'Wonderland',
+      'artist': 'Taylor Swift',
+    },
+    {
+      'imagePath': 'assets/images/create_moodboard_page/ThatsSoTrue.jpeg',
+      'title': 'That’s so true',
+      'artist': 'Gracie Abrams',
+    },
+    {
+      'imagePath': 'assets/images/create_moodboard_page/BlindingLights.png',
+      'title': 'Blinding Lights',
+      'artist': 'The Weeknd',
+    },
   ];
 
+  // Track selected songs by their image paths (List<String>)
+  List<String> selectedImages = [];
+
+  void _toggleSelectImage(String imagePath) {
+    setState(() {
+      if (selectedImages.contains(imagePath)) {
+        selectedImages.remove(imagePath);
+      } else {
+        selectedImages.add(imagePath);
+      }
+    });
+  }
+
   void _saveMoodboard() {
+    if (selectedImages.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select at least one song')),
+      );
+      return;
+    }
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -60,7 +93,7 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // All static content above "Saved Songs"
+              // Title TextField
               TextField(
                 controller: _titleController,
                 style: const TextStyle(color: Colors.black),
@@ -80,6 +113,7 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                 ),
               ),
               const SizedBox(height: 16),
+              // Description TextField
               TextField(
                 controller: _descriptionController,
                 style: const TextStyle(color: Colors.black),
@@ -100,6 +134,7 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                 ),
               ),
               const SizedBox(height: 24),
+              // Buttons Row
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -146,34 +181,23 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                 ],
               ),
               const SizedBox(height: 12),
-
-              // This is the only scrollable section, fill the rest of the screen height
+              // Scrollable grid of songs
               Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
                   childAspectRatio: 0.8,
-                  children: const [
-                    ImageCard(
-                      imagePath:
-                          'assets/images/create_moodboard_page/1989TV_Cover.webp',
-                      title: 'Wonderland',
-                      artist: 'Taylor Swift',
-                    ),
-                    ImageCard(
-                      imagePath:
-                          'assets/images/create_moodboard_page/ThatsSoTrue.jpeg',
-                      title: 'That’s so true',
-                      artist: 'Gracie Abrams',
-                    ),
-                    ImageCard(
-                      imagePath:
-                          'assets/images/create_moodboard_page/BlindingLights.png',
-                      title: 'Blinding Lights',
-                      artist: 'The Weeknd',
-                    ),
-                  ],
+                  children: savedSongs.map((song) {
+                    final imagePath = song['imagePath']!;
+                    return ImageCard(
+                      imagePath: imagePath,
+                      title: song['title']!,
+                      artist: song['artist']!,
+                      isSelected: selectedImages.contains(imagePath),
+                      onTap: () => _toggleSelectImage(imagePath),
+                    );
+                  }).toList(),
                 ),
               ),
             ],
@@ -188,43 +212,78 @@ class ImageCard extends StatelessWidget {
   final String imagePath;
   final String title;
   final String artist;
+  final bool isSelected;
+  final VoidCallback onTap;
 
   const ImageCard({
     required this.imagePath,
     required this.title,
     required this.artist,
+    required this.isSelected,
+    required this.onTap,
+    super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(14),
-          child: AspectRatio(
-            aspectRatio: 1, // Square image
-            child: Image.asset(
-              imagePath,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
+    return GestureDetector(
+      onTap: onTap,
+      child: Stack(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(14),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Image.asset(
+                    imagePath,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                artist,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 12, color: Colors.grey[500]),
+              ),
+            ],
           ),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-        ),
-        Text(
-          artist,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(fontSize: 12, color: Colors.grey[500]),
-        ),
-      ],
+          if (isSelected)
+            Positioned(
+              top: 8,
+              right: 8,
+              child: Container(
+                width: 36,
+                height: 36,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.check_circle,
+                    color: Color.fromARGB(255, 184, 117, 219),
+                    size: 36,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
