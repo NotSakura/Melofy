@@ -74,41 +74,78 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildHomePage() {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Wrap(
-          spacing: 14,
-          runSpacing: 14,
-          children: posts.map((post) {
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SongDetailsPage(
-                      title: post['title']!,
-                      artist: post['artist']!,
-                      coverImage: post['cover']!,
+  return SingleChildScrollView(
+    child: Padding(
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Wrap(
+            spacing: 14,
+            runSpacing: 24,
+            children: posts.map((post) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SongDetailsPage(
+                        title: post['title']!,
+                        artist: post['artist']!,
+                        coverImage: post['cover']!,
+                      ),
                     ),
-                  ),
-                );
-              },
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.asset(
-                  post['image']!,
-                  fit: BoxFit.cover,
-                  width: MediaQuery.of(context).size.width / 2 - 20,
-                  height: MediaQuery.of(context).size.width / 2 - 20,
+                  );
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.asset(
+                        post['image']!,
+                        fit: BoxFit.cover,
+                        width: MediaQuery.of(context).size.width / 2 - 20,
+                        height: MediaQuery.of(context).size.width / 2 - 20,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 2 - 20,
+                      child: Text(
+                        post['title']!,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 2 - 20,
+                      child: Text(
+                        post['artist']!,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            );
-          }).toList(),
-        ),
+              );
+            }).toList(),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   void _showCreateModal(BuildContext context) {
     showModalBottomSheet(
