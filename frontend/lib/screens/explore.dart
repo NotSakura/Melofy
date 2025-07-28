@@ -17,22 +17,22 @@ class _ExplorePageState extends State<ExplorePage> {
   String searchText = '';
 
   final List<String> moodboardImagePaths = [
-    'assets/images/explorePage/moodboard1.jpg',
-    'assets/images/explorePage/moodboard2.jpg',
-    'assets/images/explorePage/moodboard3.png',
-    'assets/images/explorePage/moodboard4.jpg',
-    'assets/images/explorePage/moodboard5.jpg',
+    'assets/images/explore_page/moodboard1.jpg',
+    'assets/images/explore_page/moodboard2.jpg',
+    'assets/images/explore_page/moodboard3.png',
+    'assets/images/explore_page/moodboard4.jpg',
+    'assets/images/explore_page/moodboard5.jpg',
   ];
 
   final List<String> collectionsImagePaths = [
-    'assets/images/explorePage/collection1.jpg',
-    'assets/images/explorePage/collection2.jpg',
-    'assets/images/explorePage/collection3.jpg',
-    'assets/images/explorePage/collection4.jpg',
-    'assets/images/explorePage/collection5.jpg',
-    'assets/images/explorePage/collection6.jpg',
-    'assets/images/explorePage/collection7.jpg',
-    'assets/images/explorePage/collection8.jpg',
+    'assets/images/explore_page/collection1.jpg',
+    'assets/images/explore_page/collection2.jpg',
+    'assets/images/explore_page/collection3.jpg',
+    'assets/images/explore_page/collection4.jpg',
+    'assets/images/explore_page/collection5.jpg',
+    'assets/images/explore_page/collection6.jpg',
+    'assets/images/explore_page/collection7.jpg',
+    'assets/images/explore_page/collection8.jpg',
   ];
 
   @override
