@@ -90,7 +90,7 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -169,7 +169,7 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 30),
               // Saved Songs header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -178,9 +178,9 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                     'Saved Songs',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  Text('See more >', style: TextStyle(fontSize: 12)),
                 ],
               ),
+              Text('Tap on song to select', style: TextStyle(fontSize: 12)),
               const SizedBox(height: 12),
               // Scrollable grid of songs
               Expanded(
@@ -205,7 +205,7 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavBar(currentIndex: 1),
+      bottomNavigationBar: BottomNavBar(currentIndex: 2),
     );
   }
 }
