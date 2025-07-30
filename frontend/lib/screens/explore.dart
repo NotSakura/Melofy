@@ -4,7 +4,7 @@ import '../theme_provider.dart';
 import 'moodboards/trending_moodboard1.dart';
 import 'package:frontend/widgets/bottom_nav_bar.dart';
 
-const String basePath = 'assets/images/explorePage/';
+const String basePath = 'assets/images/explore_page/';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});

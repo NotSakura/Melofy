@@ -20,7 +20,9 @@ class MelofyApp extends StatelessWidget {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             home: const HomeScreen(),
-            routes: {'/select-media': (context) => const SelectMediaScreen()},
+            routes: {
+              '/select-media': (context) => const SelectMediaScreen(),
+            },
             themeMode: themeProvider.themeMode,
             theme: ThemeData.light(),
             darkTheme: ThemeData.dark().copyWith(

@@ -36,7 +36,7 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
     },
   ];
 
-  // Track selected songs by their image paths (List<String>)
+  // Track selected songs by their image paths
   List<String> selectedImages = [];
 
   void _toggleSelectImage(String imagePath) {
@@ -180,7 +180,7 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                   ),
                 ],
               ),
-              Text('Tap on song to select', style: TextStyle(fontSize: 12)),
+              const Text('Tap on song to select', style: TextStyle(fontSize: 12)),
               const SizedBox(height: 12),
               // Scrollable grid of songs
               Expanded(

@@ -20,7 +20,7 @@ class MoodboardCard extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(14),
-          child: Image.network(
+          child: Image.asset(
             imageUrl,
             height: 140,
             width: double.infinity,
