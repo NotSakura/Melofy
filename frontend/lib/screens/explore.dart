@@ -44,7 +44,9 @@ class _ExplorePageState extends State<ExplorePage> {
         backgroundColor: theme.scaffoldBackgroundColor,
         title: Text(
           "Explore",
-          style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         actions: [
           IconButton(
@@ -67,7 +69,9 @@ class _ExplorePageState extends State<ExplorePage> {
                 hintText: 'Search artists, songs or themes',
                 hintStyle: TextStyle(color: theme.hintColor),
                 prefixIcon: Icon(Icons.search, color: theme.iconTheme.color),
-                fillColor: theme.cardColor,
+                fillColor: Theme.of(context).brightness == Brightness.dark
+                    ? Theme.of(context).cardColor
+                    : Colors.white,
                 filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -93,7 +97,9 @@ class _ExplorePageState extends State<ExplorePage> {
               searchText.isEmpty
                   ? 'Trending Moodboards'
                   : 'Searching for: "$searchText"',
-              style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 16),
             SingleChildScrollView(
@@ -135,7 +141,9 @@ class _ExplorePageState extends State<ExplorePage> {
             const SizedBox(height: 16),
             Text(
               'Recommended Collections',
-              style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 16),
             Expanded(

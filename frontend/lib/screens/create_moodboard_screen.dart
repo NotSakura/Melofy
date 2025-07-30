@@ -76,12 +76,17 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context); // Get current theme
+    final isDark = theme.brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Create New Moodboard"),
         actions: [
           IconButton(
-            icon: const Icon(Icons.wb_sunny),
+            icon: Icon(
+              isDark ? Icons.wb_sunny : Icons.nights_stay,
+              color: theme.iconTheme.color,
+            ),
             onPressed: () {
               Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
             },
@@ -100,8 +105,14 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                 style: const TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                   hintText: 'Moodboard Title',
-                  hintStyle: const TextStyle(color: Colors.black54),
-                  fillColor: Colors.white,
+                  hintStyle: TextStyle(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black54,
+                  ),
+                  fillColor: Theme.of(context).brightness == Brightness.dark
+                      ? Theme.of(context).cardColor
+                      : Colors.white,
                   filled: true,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -121,8 +132,14 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                 maxLines: 3,
                 decoration: InputDecoration(
                   hintText: 'Description',
-                  hintStyle: const TextStyle(color: Colors.black54),
-                  fillColor: Colors.white,
+                  hintStyle: TextStyle(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black54,
+                  ),
+                  fillColor: Theme.of(context).brightness == Brightness.dark
+                      ? Theme.of(context).cardColor
+                      : Colors.white,
                   filled: true,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -180,7 +197,10 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                   ),
                 ],
               ),
-              const Text('Tap on song to select', style: TextStyle(fontSize: 12)),
+              const Text(
+                'Tap on song to select',
+                style: TextStyle(fontSize: 12),
+              ),
               const SizedBox(height: 12),
               // Scrollable grid of songs
               Expanded(
