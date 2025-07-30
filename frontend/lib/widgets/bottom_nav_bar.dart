@@ -1,21 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/home.dart';
-import '../screens/explore.dart';
-import '../screens/create_moodboard_screen.dart';
+import 'package:frontend/screens/explore.dart';
+import 'package:frontend/screens/create_moodboard_screen.dart';
+import 'package:frontend/screens/select_media_screen.dart';
 
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
-
   const BottomNavBar({super.key, required this.currentIndex});
 
-  void _showCreateModal(BuildContext context) {
+  void _onItemTapped(BuildContext context, int index) {
+    if (index == currentIndex) return;
+
+    if (index == 2) {
+      _showCreateModal(context);
+      return;
+    }
+
+    Widget destination;
+    switch (index) {
+      case 0:
+        destination = const HomeScreen();
+        break;
+      case 1:
+        destination = const ExplorePage();
+        break;
+      case 3:
+        destination = const Scaffold(body: Center(child: Text('Notifications')));
+        break;
+      case 4:
+        destination = const Scaffold(body: Center(child: Text('Profile')));
+        break;
+      default:
+        destination = const HomeScreen();
+    }
+
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => destination,
+        transitionDuration: Duration.zero,
+      ),
+    );
+  }
+
+  /// ✅ Fixed Modal Navigation (No Freeze)
+  void _showCreateModal(BuildContext context) async {
     final theme = Theme.of(context);
 
-    showModalBottomSheet(
+    // Wait for modal selection
+    final result = await showModalBottomSheet<String>(
       context: context,
-      backgroundColor:
-          theme.bottomSheetTheme.backgroundColor ??
-          theme.scaffoldBackgroundColor,
+      isScrollControlled: true, // ensures modal dismisses cleanly
+      useSafeArea: true,
+      backgroundColor: theme.cardColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -27,10 +64,9 @@ class BottomNavBar extends StatelessWidget {
             children: [
               Text(
                 'Create a new…',
-                style: TextStyle(
-                  fontSize: 18,
+                style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w600,
-                  color: theme.textTheme.bodyLarge?.color ?? Colors.white,
+                  color: theme.textTheme.bodyLarge?.color,
                 ),
               ),
               const SizedBox(height: 20),
@@ -40,23 +76,12 @@ class BottomNavBar extends StatelessWidget {
                   _ModalOption(
                     icon: Icons.post_add,
                     label: 'Media Post',
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.pushNamed(context, '/select-media');
-                    },
+                    onTap: () => Navigator.of(context).pop('media'),
                   ),
                   _ModalOption(
                     icon: Icons.grid_view,
                     label: 'Moodboard',
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const CreateMoodboardPage(),
-                        ),
-                      );
-                    },
+                    onTap: () => Navigator.of(context).pop('moodboard'),
                   ),
                 ],
               ),
@@ -65,63 +90,42 @@ class BottomNavBar extends StatelessWidget {
         );
       },
     );
+
+    // ✅ Navigate AFTER modal fully closes
+    if (!context.mounted) return;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (result == 'media') {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const SelectMediaScreen()),
+        );
+      } else if (result == 'moodboard') {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const CreateMoodboardPage()),
+        );
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
-    return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: theme.brightness == Brightness.dark
-                ? Colors.black.withOpacity(0.3)
-                : Colors.grey.withOpacity(0.15),
-            spreadRadius: 1,
-            blurRadius: 8,
-            offset: const Offset(
-              0,
-              -3,
-            ), // Shadow upwards since nav bar is at bottom
-          ),
-        ],
-      ),
-      child: BottomNavigationBar(
-        backgroundColor: theme.bottomNavigationBarTheme.backgroundColor,
-        selectedItemColor: theme.bottomNavigationBarTheme.selectedItemColor,
-        unselectedItemColor: theme.bottomNavigationBarTheme.unselectedItemColor,
-        currentIndex: currentIndex,
-        type: BottomNavigationBarType.fixed,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const HomeScreen()),
-            );
-          }
-          if (index == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ExplorePage()),
-            );
-          }
-          if (index == 2) {
-            _showCreateModal(context);
-          }
-          // Add other tab navigations if needed
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.add_box), label: ''),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_none),
-            label: '',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ''),
-        ],
-      ),
+    return BottomNavigationBar(
+      currentIndex: currentIndex,
+      backgroundColor: theme.scaffoldBackgroundColor,
+      selectedItemColor: isDark ? Colors.white : Colors.black,
+      unselectedItemColor: isDark ? Colors.white54 : Colors.black45,
+      type: BottomNavigationBarType.fixed,
+      onTap: (index) => _onItemTapped(context, index),
+      items: const [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+        BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
+        BottomNavigationBarItem(icon: Icon(Icons.add_box), label: ''),
+        BottomNavigationBarItem(icon: Icon(Icons.notifications_none), label: ''),
+        BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ''),
+      ],
     );
   }
 }
@@ -140,7 +144,6 @@ class _ModalOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
     return GestureDetector(
       onTap: onTap,
@@ -148,25 +151,14 @@ class _ModalOption extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: isDark
-                  ? const Color.fromARGB(255, 184, 117, 219)
-                  : Colors.purple.shade200,
+              color: theme.colorScheme.primary.withOpacity(0.3),
               borderRadius: BorderRadius.circular(20),
             ),
             padding: const EdgeInsets.all(20),
-            child: Icon(
-              icon,
-              size: 28,
-              color: isDark ? Colors.black : Colors.white,
-            ),
+            child: Icon(icon, size: 28, color: theme.iconTheme.color),
           ),
           const SizedBox(height: 8),
-          Text(
-            label,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.textTheme.bodyLarge?.color,
-            ),
-          ),
+          Text(label, style: theme.textTheme.bodyMedium),
         ],
       ),
     );

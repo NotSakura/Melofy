@@ -4,8 +4,6 @@ import '../theme_provider.dart';
 import 'moodboards/trending_moodboard1.dart';
 import 'package:frontend/widgets/bottom_nav_bar.dart';
 
-const String basePath = 'assets/images/explore_page/';
-
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
 
@@ -37,12 +35,23 @@ class _ExplorePageState extends State<ExplorePage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context); // Get current theme
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text("Moodboard"),
+        backgroundColor: theme.scaffoldBackgroundColor,
+        title: Text(
+          "Explore",
+          style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+        ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.wb_sunny),
+            icon: Icon(
+              isDark ? Icons.wb_sunny : Icons.nights_stay,
+              color: theme.iconTheme.color,
+            ),
             onPressed: () {
               Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
             },
@@ -53,10 +62,12 @@ class _ExplorePageState extends State<ExplorePage> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: TextField(
+              style: TextStyle(color: theme.textTheme.bodyLarge?.color),
               decoration: InputDecoration(
                 hintText: 'Search artists, songs or themes',
-                prefixIcon: const Icon(Icons.search),
-                fillColor: Colors.white,
+                hintStyle: TextStyle(color: theme.hintColor),
+                prefixIcon: Icon(Icons.search, color: theme.iconTheme.color),
+                fillColor: theme.cardColor,
                 filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -82,13 +93,13 @@ class _ExplorePageState extends State<ExplorePage> {
               searchText.isEmpty
                   ? 'Trending Moodboards'
                   : 'Searching for: "$searchText"',
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: List.generate(5, (index) {
+                children: List.generate(moodboardImagePaths.length, (index) {
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -124,21 +135,20 @@ class _ExplorePageState extends State<ExplorePage> {
             const SizedBox(height: 16),
             Text(
               'Recommended Collections',
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             Expanded(
               child: GridView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 0),
+                padding: EdgeInsets.zero,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 16,
                   crossAxisSpacing: 16,
                   childAspectRatio: 1,
                 ),
-                itemCount: 8,
+                itemCount: collectionsImagePaths.length,
                 itemBuilder: (context, index) {
-                  final imageIndex = index % collectionsImagePaths.length;
                   return InkWell(
                     borderRadius: BorderRadius.circular(12),
                     onTap: () {
@@ -152,7 +162,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     child: Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage(collectionsImagePaths[imageIndex]),
+                          image: AssetImage(collectionsImagePaths[index]),
                           fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.circular(12),
@@ -172,7 +182,7 @@ class _ExplorePageState extends State<ExplorePage> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavBar(currentIndex: 1),
+      bottomNavigationBar: const BottomNavBar(currentIndex: 1),
     );
   }
 }
