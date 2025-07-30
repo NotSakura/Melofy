@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  provider: ^6.1.1
   spotify_sdk: ^2.3.0
   http: ^0.13.6
   audioplayers: ^5.2.1

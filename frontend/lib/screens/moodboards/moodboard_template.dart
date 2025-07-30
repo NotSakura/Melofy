@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../theme_provider.dart';
 
 class MoodboardPage extends StatelessWidget {
   final String title;
@@ -26,6 +28,12 @@ class MoodboardPage extends StatelessWidget {
             icon: const Icon(Icons.share),
             onPressed: () {
               // Add share functionality here
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.wb_sunny),
+            onPressed: () {
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
             },
           ),
         ],

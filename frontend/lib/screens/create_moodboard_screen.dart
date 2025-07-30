@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/widgets/bottom_nav_bar.dart';
+import 'package:provider/provider.dart';
+import '../theme_provider.dart';
+import '../screens/moodboards/moodboard_template.dart';
 
 class CreateMoodboardPage extends StatefulWidget {
   const CreateMoodboardPage({super.key});
@@ -8,182 +12,278 @@ class CreateMoodboardPage extends StatefulWidget {
 }
 
 class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
-  String searchText = '';
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Create New Moodboard")),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          // Wraps body content to avoid overflow
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Title input TextField
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Moodboard Title',
-                    fillColor: Colors.white,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 0,
-                      horizontal: 12,
-                    ),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      searchText = value;
-                    });
-                  },
-                ),
-                const SizedBox(height: 16),
+  List<String> selectedTags = ['Chill', 'Indie'];
 
-                // Description input TextField
-                TextField(
-                  style: const TextStyle(color: Colors.black),
-                  maxLines: 3,
-                  decoration: InputDecoration(
-                    hintText: 'Description',
-                    hintStyle: const TextStyle(color: Colors.black54),
-                    fillColor: Colors.white,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 12,
-                      horizontal: 12,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 24),
+  // List of saved songs with details
+  final List<Map<String, String>> savedSongs = [
+    {
+      'imagePath': 'assets/images/create_moodboard_page/1989TV_Cover.webp',
+      'title': 'Wonderland',
+      'artist': 'Taylor Swift',
+    },
+    {
+      'imagePath': 'assets/images/create_moodboard_page/ThatsSoTrue.jpeg',
+      'title': 'That’s so true',
+      'artist': 'Gracie Abrams',
+    },
+    {
+      'imagePath': 'assets/images/create_moodboard_page/BlindingLights.png',
+      'title': 'Blinding Lights',
+      'artist': 'The Weeknd',
+    },
+  ];
 
-                // Buttons row
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFFD966),
-                        foregroundColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      onPressed: () {},
-                      child: const Text('Add tags'),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFE5C3FF),
-                        foregroundColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      onPressed: () {},
-                      child: const Text('Save'),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 40),
+  // Track selected songs by their image paths
+  List<String> selectedImages = [];
 
-                // Saved Posts section
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text(
-                      'Saved Moodboards',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text('See more >', style: TextStyle(fontSize: 12)),
-                  ],
-                ),
+  void _toggleSelectImage(String imagePath) {
+    setState(() {
+      if (selectedImages.contains(imagePath)) {
+        selectedImages.remove(imagePath);
+      } else {
+        selectedImages.add(imagePath);
+      }
+    });
+  }
 
-                const SizedBox(height: 12),
-                // Saved images scroll
-                SizedBox(
-                  height: 200, // enough height for image and text
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      _buildImageCard(
-                        'assets/images/create_moodboard_page/1989TV_Cover.webp',
-                        'Wonderland',
-                        'Taylor Swift',
-                      ),
-                      _buildImageCard(
-                        'assets/images/create_moodboard_page/ThatsSoTrue.jpeg',
-                        'That’s so true',
-                        'Gracie Abrams',
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 24),
-
-                const SizedBox(height: 20), // spacing at bottom
-              ],
-            ),
-          ),
+  void _saveMoodboard() {
+    if (selectedImages.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select at least one song')),
+      );
+      return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MoodboardPage(
+          title: _titleController.text,
+          description: _descriptionController.text,
+          tags: selectedTags,
+          imagePaths: selectedImages,
+          onTrackTap: (path) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text('Tapped: $path')));
+          },
         ),
       ),
     );
   }
 
-  static Widget _buildImageCard(String imagePath, String title, String artist) {
-    return Container(
-      width: 150,
-      margin: const EdgeInsets.only(right: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Image box with shadow and rounded corners
-          Container(
-            width: 150,
-            height: 150,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(imagePath),
-                fit: BoxFit.cover,
-              ),
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 4,
-                  offset: Offset(2, 2),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Create New Moodboard"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.wb_sunny),
+            onPressed: () {
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+            },
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Title TextField
+              TextField(
+                controller: _titleController,
+                style: const TextStyle(color: Colors.black),
+                decoration: InputDecoration(
+                  hintText: 'Moodboard Title',
+                  hintStyle: const TextStyle(color: Colors.black54),
+                  fillColor: Colors.white,
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 0,
+                    horizontal: 12,
+                  ),
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 16),
+              // Description TextField
+              TextField(
+                controller: _descriptionController,
+                style: const TextStyle(color: Colors.black),
+                maxLines: 3,
+                decoration: InputDecoration(
+                  hintText: 'Description',
+                  hintStyle: const TextStyle(color: Colors.black54),
+                  fillColor: Colors.white,
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 12,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              // Buttons Row
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFFFD966),
+                      foregroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Tag selector coming soon!'),
+                        ),
+                      );
+                    },
+                    child: const Text('Add tags'),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFE5C3FF),
+                      foregroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    onPressed: _saveMoodboard,
+                    child: const Text('Save'),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 30),
+              // Saved Songs header
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text(
+                    'Saved Songs',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              const Text('Tap on song to select', style: TextStyle(fontSize: 12)),
+              const SizedBox(height: 12),
+              // Scrollable grid of songs
+              Expanded(
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 0.8,
+                  children: savedSongs.map((song) {
+                    final imagePath = song['imagePath']!;
+                    return ImageCard(
+                      imagePath: imagePath,
+                      title: song['title']!,
+                      artist: song['artist']!,
+                      isSelected: selectedImages.contains(imagePath),
+                      onTap: () => _toggleSelectImage(imagePath),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 6),
+        ),
+      ),
+      bottomNavigationBar: BottomNavBar(currentIndex: 2),
+    );
+  }
+}
 
-          // Title
-          Text(
-            title,
-            style: const TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+class ImageCard extends StatelessWidget {
+  final String imagePath;
+  final String title;
+  final String artist;
+  final bool isSelected;
+  final VoidCallback onTap;
 
-          // Artist
-          Text(
-            artist,
-            style: const TextStyle(color: Colors.black54, fontSize: 12),
+  const ImageCard({
+    required this.imagePath,
+    required this.title,
+    required this.artist,
+    required this.isSelected,
+    required this.onTap,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Stack(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(14),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Image.asset(
+                    imagePath,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                artist,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 12, color: Colors.grey[500]),
+              ),
+            ],
           ),
+          if (isSelected)
+            Positioned(
+              top: 8,
+              right: 8,
+              child: Container(
+                width: 36,
+                height: 36,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.check_circle,
+                    color: Color.fromARGB(255, 184, 117, 219),
+                    size: 36,
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );
