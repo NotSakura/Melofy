@@ -79,18 +79,19 @@ class HomeScreen extends StatelessWidget {
             runSpacing: 24,
             children: posts.map((post) {
               return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SongDetailsPage(
-                        title: post['title']!,
-                        artist: post['artist']!,
-                        coverImage: post['cover']!,
-                      ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SongDetailsPage(
+                      title: post['title']!,
+                      artist: post['artist']!,
+                      coverImage: post['cover']!,
+                      trackUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", // demo SoundCloud stream
                     ),
-                  );
-                },
+                  ),
+                );
+              },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
