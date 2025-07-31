@@ -87,7 +87,7 @@ class HomeScreen extends StatelessWidget {
                       title: post['title']!,
                       artist: post['artist']!,
                       coverImage: post['cover']!,
-                      trackUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", // demo SoundCloud stream
+                      trackUrl: "https://filesamples.com/samples/audio/mp3/sample1.mp3", // demo SoundCloud stream
                     ),
                   ),
                 );
