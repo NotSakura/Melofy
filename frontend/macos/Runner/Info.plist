@@ -36,8 +36,14 @@
 	<string>We need Bluetooth to connect to Spotify</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>We need Bluetooth to connect to Spotify</string>
+
 	<key>NSPhotoLibraryUsageDescription</key>
-    <string>We need access to your photo library to let you upload photos and videos.</string>
+	<string>We need access to your photo library to upload media.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We need permission to save media to your library.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to your camera to take photos or videos.</string>
+
 
 </dict>
 </plist>
