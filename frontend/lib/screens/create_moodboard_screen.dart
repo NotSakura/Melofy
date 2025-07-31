@@ -18,19 +18,19 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
   List<String> selectedTags = ['Chill', 'Indie'];
 
   // List of saved songs with details
-  final List<Map<String, String>> savedSongs = [
+  final List<Map<String, String>> savedMedia = [
     {
-      'imagePath': 'assets/images/create_moodboard_page/1989TV_Cover.webp',
+      'imagePath': 'assets/images/create_moodboard_page/image2.jpg',
       'title': 'Wonderland',
       'artist': 'Taylor Swift',
     },
     {
-      'imagePath': 'assets/images/create_moodboard_page/ThatsSoTrue.jpeg',
+      'imagePath': 'assets/images/create_moodboard_page/image1.jpg',
       'title': 'That’s so true',
       'artist': 'Gracie Abrams',
     },
     {
-      'imagePath': 'assets/images/create_moodboard_page/BlindingLights.png',
+      'imagePath': 'assets/images/create_moodboard_page/image3.jpg',
       'title': 'Blinding Lights',
       'artist': 'The Weeknd',
     },
@@ -192,7 +192,7 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
                   Text(
-                    'Saved Songs',
+                    'Saved Media',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -209,7 +209,7 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
                   childAspectRatio: 0.8,
-                  children: savedSongs.map((song) {
+                  children: savedMedia.map((song) {
                     final imagePath = song['imagePath']!;
                     return ImageCard(
                       imagePath: imagePath,
