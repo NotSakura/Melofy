@@ -7,8 +7,8 @@ import 'full_screen_media.dart';
 class SongDetailsPage extends StatefulWidget {
   final String title;
   final String artist;
-  final String image;
-  final String cover;
+  final String image; // Main header (local or custom UI image)
+  final String cover; // Apple album cover (artworkUrl600)
   final String? previewUrl;
   final String? trackViewUrl;
 
@@ -27,7 +27,6 @@ class SongDetailsPage extends StatefulWidget {
 }
 
 class _SongDetailsPageState extends State<SongDetailsPage> {
-
   Future<void> _openAppleMusic() async {
     if (widget.trackViewUrl != null) {
       final uri = Uri.parse(widget.trackViewUrl!);
@@ -65,39 +64,40 @@ class _SongDetailsPageState extends State<SongDetailsPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Cover Image (Tap to view fullscreen)
+          // Header Image (Tap to view fullscreen)
           GestureDetector(
             onTap: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => FullScreenMedia(
-        imagePath: widget.image, // Pass image
-        previewUrl: widget.previewUrl, // Pass preview URL
-        songTitle: widget.title,    // Pass song title
-        artistName: widget.artist,  // Pass artist name
-      ),
-    ),
-  );
-},
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FullScreenMedia(
+                    imagePath: widget.image,
+                    previewUrl: widget.previewUrl,
+                    songTitle: widget.title,
+                    artistName: widget.artist,
+                  ),
+                ),
+              );
+            },
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20),
               ),
               child: widget.image.startsWith('http')
-                  ? Image.network(widget.image, height: 300, width: double.infinity, fit: BoxFit.cover)
-                  : Image.asset(widget.image, height: 300, width: double.infinity, fit: BoxFit.cover),
+                  ? Image.network(widget.image, height: 400, width: double.infinity, fit: BoxFit.cover)
+                  : Image.asset(widget.image, height: 400, width: double.infinity, fit: BoxFit.cover),
             ),
           ),
           const SizedBox(height: 24),
 
-          // Song Info + Buttons
+          // Song Info and Buttons
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Title & Artist
                 Text(widget.title,
                     style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
@@ -107,31 +107,7 @@ class _SongDetailsPageState extends State<SongDetailsPage> {
                     )),
                 const SizedBox(height: 20),
 
-                // View in Apple Music Button
-                if (widget.trackViewUrl != null)
-                  ElevatedButton.icon(
-                    onPressed: _openAppleMusic,
-                    icon: const Icon(Icons.open_in_new),
-                    label: const Text('View in Apple Music'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.redAccent,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                    ),
-                  ),
-                if (widget.trackViewUrl != null)
-                  const Padding(
-                    padding: EdgeInsets.only(top: 8.0),
-                    child: Text(
-                      'Music previews provided by Apple Music',
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
-                  ),
-                const SizedBox(height: 24),
-
+                // Add to Moodboard Button (moved up)
                 ElevatedButton(
                   onPressed: () {
                     // Add track to moodboard logic
@@ -149,6 +125,48 @@ class _SongDetailsPageState extends State<SongDetailsPage> {
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                   ),
                 ),
+                const SizedBox(height: 24),
+
+                // Apple Music Button with Thumbnail
+                if (widget.trackViewUrl != null)
+                  Row(
+                    children: [
+                      // Apple album cover thumbnail
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(6),
+                        child: widget.cover.startsWith('http')
+                            ? Image.network(widget.cover, width: 50, height: 50, fit: BoxFit.cover)
+                            : Image.asset(widget.cover, width: 50, height: 50, fit: BoxFit.cover),
+                      ),
+                      const SizedBox(width: 12),
+
+                      // Apple Music button
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: _openAppleMusic,
+                          icon: const Icon(Icons.open_in_new),
+                          label: const Text('View in Apple Music'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.redAccent,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                if (widget.trackViewUrl != null)
+                  const Padding(
+                    padding: EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      'Music previews and artwork provided by Apple Music',
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                  ),
               ],
             ),
           ),
