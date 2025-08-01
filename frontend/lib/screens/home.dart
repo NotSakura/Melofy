@@ -98,7 +98,8 @@ class HomeScreen extends StatelessWidget {
                       builder: (context) => SongDetailsPage(
                         title: post['title']!,
                         artist: post['artist']!,
-                        coverImage: post['cover']!,
+                        image: post['image']!,
+                        cover: post['cover']!,
                         previewUrl: post['preview'],           // Pass preview URL
                         trackViewUrl: post['appleMusicUrl'],  // Pass Apple Music URL
                       ),

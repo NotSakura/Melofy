@@ -7,7 +7,8 @@ import 'full_screen_media.dart';
 class SongDetailsPage extends StatefulWidget {
   final String title;
   final String artist;
-  final String coverImage;
+  final String image;
+  final String cover;
   final String? previewUrl;
   final String? trackViewUrl;
 
@@ -15,7 +16,8 @@ class SongDetailsPage extends StatefulWidget {
     super.key,
     required this.title,
     required this.artist,
-    required this.coverImage,
+    required this.image,
+    required this.cover,
     this.previewUrl,
     this.trackViewUrl,
   });
@@ -70,7 +72,7 @@ class _SongDetailsPageState extends State<SongDetailsPage> {
     context,
     MaterialPageRoute(
       builder: (context) => FullScreenMedia(
-        imagePath: widget.coverImage, // Pass image
+        imagePath: widget.image, // Pass image
         previewUrl: widget.previewUrl, // Pass preview URL
         songTitle: widget.title,    // Pass song title
         artistName: widget.artist,  // Pass artist name
@@ -83,9 +85,9 @@ class _SongDetailsPageState extends State<SongDetailsPage> {
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20),
               ),
-              child: widget.coverImage.startsWith('http')
-                  ? Image.network(widget.coverImage, height: 300, width: double.infinity, fit: BoxFit.cover)
-                  : Image.asset(widget.coverImage, height: 300, width: double.infinity, fit: BoxFit.cover),
+              child: widget.image.startsWith('http')
+                  ? Image.network(widget.image, height: 300, width: double.infinity, fit: BoxFit.cover)
+                  : Image.asset(widget.image, height: 300, width: double.infinity, fit: BoxFit.cover),
             ),
           ),
           const SizedBox(height: 24),
