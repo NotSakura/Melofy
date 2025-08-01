@@ -298,7 +298,9 @@ class _ExplorePageState extends State<ExplorePage> {
                         Text(
                           collectionTitles[imagePath] ?? '',
                           textAlign: TextAlign.center,
-                          style: theme.textTheme.bodyMedium,
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ],
                     ),
