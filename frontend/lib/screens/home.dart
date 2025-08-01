@@ -13,36 +13,48 @@ class HomeScreen extends StatelessWidget {
       'title': 'Wonderland (Taylor’s Version)',
       'artist': 'Taylor Swift',
       'cover': 'assets/images/homepage/Wonderland.jpg',
+      'preview': 'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/7a/17/7a/7a177a82-bfcf-3aa6-fef5-3209f0a44e66/mzaf_11239821253164246026.plus.aac.p.m4a',
+      'appleMusicUrl': 'https://music.apple.com/us/album/wonderland-taylors-version/1708308989?i=1708309195&uo=4',
     },
     {
       'image': 'assets/images/homepage/ThatsSoTrue.jpg',
       'title': "That's so true",
       'artist': 'Gracie Abrams',
       'cover': 'assets/images/homepage/ThatsSoTrue.jpg',
+      'preview': 'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/56/c3/f3/56c3f3c0-5408-f6dd-0069-d902c20e438f/mzaf_5615583560189191751.plus.aac.ep.m4a',
+      'appleMusicUrl': 'https://music.apple.com/us/song/thats-so-true/1773474483',
     },
     {
       'image': 'assets/images/homepage/MidnightSerenade.jpg',
-      'title': 'Midnight Serenade',
-      'artist': 'Luna Harmony',
+      'title': 'About You',
+      'artist': 'The 1975',
       'cover': 'assets/images/homepage/MidnightSerenade.jpg',
+      'preview': 'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/48/1e/97/481e974c-9493-ed4f-b84b-0f5796f22aef/mzaf_14511434660864925569.plus.aac.ep.m4a',
+      'appleMusicUrl': 'https://music.apple.com/us/song/about-you/1632479847',
     },
     {
       'image': 'assets/images/homepage/Reflections.jpg',
       'title': 'Reflections',
       'artist': 'The Neighbourhood',
       'cover': 'assets/images/homepage/Reflections.jpg',
+      'preview': 'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/d4/51/cd/d451cd0c-c804-5b52-d125-ad74ca84dac9/mzaf_15426298693603867753.plus.aac.ep.m4a',
+      'appleMusicUrl': 'https://music.apple.com/us/song/reflections/1440532773',
     },
     {
       'image': 'assets/images/homepage/Dreamlight.jpg',
-      'title': 'Dreamlight',
-      'artist': 'Various Artists',
+      'title': 'Cinnamon Girl',
+      'artist': 'Lana Del Rey',
       'cover': 'assets/images/homepage/Dreamlight.jpg',
+      'preview': 'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/86/ab/c9/86abc949-717d-b99e-ccc1-2d06a10e01d6/mzaf_4867373271051538736.plus.aac.ep.m4a',
+      'appleMusicUrl': 'https://music.apple.com/us/song/cinnamon-girl/1474669074',
     },
     {
       'image': 'assets/images/homepage/AuraEchoes.jpg',
-      'title': 'Aura Echoes',
-      'artist': 'Echo Bloom',
+      'title': 'Mess It Up',
+      'artist': 'Gracie Abrams',
       'cover': 'assets/images/homepage/AuraEchoes.jpg',
+      'preview': 'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/98/a5/de/98a5deef-c892-0ad4-8e50-d7418340b362/mzaf_12817004681891408622.plus.aac.ep.m4a',
+      'appleMusicUrl': 'https://music.apple.com/us/album/mess-it-up-single/1565850759',
     },
   ];
 
@@ -87,6 +99,8 @@ class HomeScreen extends StatelessWidget {
                         title: post['title']!,
                         artist: post['artist']!,
                         coverImage: post['cover']!,
+                        previewUrl: post['preview'],           // Pass preview URL
+                        trackViewUrl: post['appleMusicUrl'],  // Pass Apple Music URL
                       ),
                     ),
                   );
@@ -136,5 +150,4 @@ class HomeScreen extends StatelessWidget {
       bottomNavigationBar: const BottomNavBar(currentIndex: 0),
     );
   }
-
 }
