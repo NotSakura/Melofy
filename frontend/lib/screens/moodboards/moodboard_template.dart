@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../theme_provider.dart';
+import '../../models/track_info.dart';
 
 class MoodboardPage extends StatelessWidget {
   final String title;
@@ -8,6 +9,7 @@ class MoodboardPage extends StatelessWidget {
   final List<String> tags;
   final List<String> imagePaths;
   final void Function(String imagePath) onTrackTap;
+  final List<TrackInfo> tracksInfo;
 
   const MoodboardPage({
     super.key,
@@ -16,10 +18,14 @@ class MoodboardPage extends StatelessWidget {
     required this.tags,
     required this.imagePaths,
     required this.onTrackTap,
+    required this.tracksInfo,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final double itemWidth = MediaQuery.of(context).size.width / 2 - 20;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -27,7 +33,7 @@ class MoodboardPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () {
-              // Add share functionality here
+              // share functionality here
             },
           ),
           IconButton(
@@ -38,71 +44,123 @@ class MoodboardPage extends StatelessWidget {
           ),
         ],
       ),
-
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(description, style: const TextStyle(fontSize: 16)),
-
-            const SizedBox(height: 16),
-
-            Wrap(
-              spacing: 8,
-              children: tags
-                  .map(
-                    (tag) => Chip(
-                      label: Text(tag),
-                      backgroundColor: Colors.deepPurple.shade300,
-                      labelStyle: const TextStyle(color: Colors.white),
-                    ),
-                  )
-                  .toList(),
-            ),
-
-            const SizedBox(height: 24),
-
-            const Text(
-              'Tracks',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-
-            const SizedBox(height: 12),
-
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-                children: imagePaths.map((path) {
-                  return InkWell(
-                    borderRadius: BorderRadius.circular(12),
-                    onTap: () => onTrackTap(path),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        image: DecorationImage(
-                          image: AssetImage(path),
-                          fit: BoxFit.cover,
+      body: CustomScrollView(
+        slivers: [
+          // Description and tags as a SliverList
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                Text(description, style: const TextStyle(fontSize: 16)),
+                const SizedBox(height: 16),
+                Wrap(
+                  spacing: 8,
+                  children: tags
+                      .map(
+                        (tag) => Chip(
+                          label: Text(tag),
+                          backgroundColor: Colors.deepPurple.shade300,
+                          labelStyle: const TextStyle(color: Colors.white),
                         ),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 4,
-                            offset: Offset(2, 2),
-                          ),
-                        ],
+                      )
+                      .toList(),
+                ),
+                const SizedBox(height: 24),
+                const Text(
+                  'Tracks',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+              ]),
+            ),
+          ),
+
+          // The grid of tracks as a SliverGrid
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            sliver: SliverGrid(
+              delegate: SliverChildBuilderDelegate((context, index) {
+                final track = tracksInfo[index];
+                return InkWell(
+                  borderRadius: BorderRadius.circular(12),
+                  onTap: () {
+                    onTrackTap(track.imagePath);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            FullImagePage(imagePath: track.imagePath),
                       ),
-                    ),
-                  );
-                }).toList(),
+                    );
+                  },
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.asset(
+                          track.imagePath,
+                          fit: BoxFit.cover,
+                          width: itemWidth,
+                          height: itemWidth,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      SizedBox(
+                        width: itemWidth,
+                        child: Text(
+                          track.name,
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      SizedBox(
+                        width: itemWidth,
+                        child: Text(
+                          track.artist,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.textTheme.bodyMedium?.color
+                                ?.withOpacity(0.7),
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }, childCount: tracksInfo.length),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+                childAspectRatio: 0.75,
               ),
             ),
-          ],
-        ),
+          ),
+
+          // Optional extra padding at bottom to avoid cutoff
+          const SliverPadding(padding: EdgeInsets.only(bottom: 24)),
+        ],
       ),
+    );
+  }
+}
+
+class FullImagePage extends StatelessWidget {
+  final String imagePath;
+
+  const FullImagePage({super.key, required this.imagePath});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(child: Image.asset(imagePath)),
     );
   }
 }

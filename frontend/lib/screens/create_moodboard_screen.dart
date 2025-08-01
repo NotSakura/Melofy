@@ -3,6 +3,7 @@ import 'package:frontend/widgets/bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 import '../theme_provider.dart';
 import '../screens/moodboards/moodboard_template.dart';
+import '../models/track_info.dart'; // <-- import TrackInfo here
 
 class CreateMoodboardPage extends StatefulWidget {
   const CreateMoodboardPage({super.key});
@@ -17,7 +18,6 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
 
   List<String> selectedTags = ['Chill', 'Indie'];
 
-  // List of saved songs with details
   final List<Map<String, String>> savedMedia = [
     {
       'imagePath': 'assets/images/create_moodboard_page/image2.jpg',
@@ -36,7 +36,6 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
     },
   ];
 
-  // Track selected songs by their image paths
   List<String> selectedImages = [];
 
   void _toggleSelectImage(String imagePath) {
@@ -56,6 +55,19 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
       );
       return;
     }
+
+    // Build the tracksInfo list for selected images using shared TrackInfo
+    final tracksInfo = savedMedia
+        .where((song) => selectedImages.contains(song['imagePath']))
+        .map(
+          (song) => TrackInfo(
+            imagePath: song['imagePath']!,
+            name: song['title']!,
+            artist: song['artist']!,
+          ),
+        )
+        .toList();
+
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -69,6 +81,7 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
               context,
             ).showSnackBar(SnackBar(content: Text('Tapped: $path')));
           },
+          tracksInfo: tracksInfo, // pass typed tracksInfo list
         ),
       ),
     );
@@ -76,7 +89,7 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context); // Get current theme
+    final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
@@ -99,20 +112,15 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Title TextField
               TextField(
                 controller: _titleController,
                 style: const TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                   hintText: 'Moodboard Title',
                   hintStyle: TextStyle(
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? Colors.white
-                        : Colors.black54,
+                    color: isDark ? Colors.white : Colors.black54,
                   ),
-                  fillColor: Theme.of(context).brightness == Brightness.dark
-                      ? Theme.of(context).cardColor
-                      : Colors.white,
+                  fillColor: isDark ? theme.cardColor : Colors.white,
                   filled: true,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -125,7 +133,6 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                 ),
               ),
               const SizedBox(height: 16),
-              // Description TextField
               TextField(
                 controller: _descriptionController,
                 style: const TextStyle(color: Colors.black),
@@ -133,13 +140,9 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                 decoration: InputDecoration(
                   hintText: 'Description',
                   hintStyle: TextStyle(
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? Colors.white
-                        : Colors.black54,
+                    color: isDark ? Colors.white : Colors.black54,
                   ),
-                  fillColor: Theme.of(context).brightness == Brightness.dark
-                      ? Theme.of(context).cardColor
-                      : Colors.white,
+                  fillColor: isDark ? theme.cardColor : Colors.white,
                   filled: true,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -152,7 +155,6 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                 ),
               ),
               const SizedBox(height: 24),
-              // Buttons Row
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -187,7 +189,6 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                 ],
               ),
               const SizedBox(height: 30),
-              // Saved Songs header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
@@ -202,7 +203,6 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                 style: TextStyle(fontSize: 12),
               ),
               const SizedBox(height: 12),
-              // Scrollable grid of songs
               Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
@@ -225,7 +225,7 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavBar(currentIndex: 2),
+      bottomNavigationBar: const BottomNavBar(currentIndex: 2),
     );
   }
 }

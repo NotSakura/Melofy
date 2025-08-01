@@ -1,10 +1,24 @@
-// explore.dart
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../theme_provider.dart';
 import 'moodboards/moodboard_template.dart';
 import 'package:frontend/widgets/bottom_nav_bar.dart';
+import '../models/track_info.dart'; // Shared TrackInfo model
+
+Map<String, List<TrackInfo>> convertToTrackInfoMap(
+  Map<String, List<String>> rawMap,
+  Map<String, TrackInfo> allTrackDetails,
+) {
+  final Map<String, List<TrackInfo>> converted = {};
+  rawMap.forEach((key, listOfImagePaths) {
+    converted[key] = listOfImagePaths
+        .map((imagePath) => allTrackDetails[imagePath])
+        .whereType<TrackInfo>() // skips any nulls safely
+        .toList();
+  });
+  return converted;
+}
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
@@ -105,7 +119,110 @@ class _ExplorePageState extends State<ExplorePage> {
     'assets/images/explore_page/tracks/song20.jpg',
   ];
 
-  late final Map<String, List<String>> moodboardTracks;
+  final Map<String, TrackInfo> allTrackDetails = {
+    'assets/images/explore_page/tracks/song1.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song1.jpg',
+      name: 'Hey Ya!',
+      artist: 'OutKast',
+    ),
+    'assets/images/explore_page/tracks/song2.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song2.jpg',
+      name: 'Rolling in the Deep',
+      artist: 'Adele',
+    ),
+    'assets/images/explore_page/tracks/song3.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song3.jpg',
+      name: 'Umbrella',
+      artist: 'Rihanna',
+    ),
+    'assets/images/explore_page/tracks/song4.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song4.jpg',
+      name: 'Clocks',
+      artist: 'Coldplay',
+    ),
+    'assets/images/explore_page/tracks/song5.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song5.jpg',
+      name: 'Hips Don’t Lie',
+      artist: 'Shakira',
+    ),
+    'assets/images/explore_page/tracks/song6.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song6.jpg',
+      name: 'Happy',
+      artist: 'Pharrell Williams',
+    ),
+    'assets/images/explore_page/tracks/song7.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song7.jpg',
+      name: 'Bad Romance',
+      artist: 'Lady Gaga',
+    ),
+    'assets/images/explore_page/tracks/song8.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song8.jpg',
+      name: 'Get Lucky',
+      artist: 'Daft Punk',
+    ),
+    'assets/images/explore_page/tracks/song9.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song9.jpg',
+      name: 'Shape of You',
+      artist: 'Ed Sheeran',
+    ),
+    'assets/images/explore_page/tracks/song10.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song10.jpg',
+      name: 'Firework',
+      artist: 'Katy Perry',
+    ),
+    'assets/images/explore_page/tracks/song11.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song11.jpg',
+      name: 'Lose Yourself',
+      artist: 'Eminem',
+    ),
+    'assets/images/explore_page/tracks/song12.png': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song12.png',
+      name: 'Uptown Funk',
+      artist: 'Mark Ronson ft. Bruno Mars',
+    ),
+    'assets/images/explore_page/tracks/song13.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song13.jpg',
+      name: 'Rolling in the Deep',
+      artist: 'Adele',
+    ),
+    'assets/images/explore_page/tracks/song14.png': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song14.png',
+      name: 'Can’t Stop the Feeling!',
+      artist: 'Justin Timberlake',
+    ),
+    'assets/images/explore_page/tracks/song15.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song15.jpg',
+      name: 'Royals',
+      artist: 'Lorde',
+    ),
+    'assets/images/explore_page/tracks/song16.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song16.jpg',
+      name: 'Seven Nation Army',
+      artist: 'The White Stripes',
+    ),
+    'assets/images/explore_page/tracks/song17.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song17.jpg',
+      name: 'Someone Like You',
+      artist: 'Adele',
+    ),
+    'assets/images/explore_page/tracks/song18.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song18.jpg',
+      name: 'Toxic',
+      artist: 'Britney Spears',
+    ),
+    'assets/images/explore_page/tracks/song19.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song19.jpg',
+      name: 'Boulevard of Broken Dreams',
+      artist: 'Green Day',
+    ),
+    'assets/images/explore_page/tracks/song20.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song20.jpg',
+      name: 'Chandelier',
+      artist: 'Sia',
+    ),
+  };
+
+  late final Map<String, List<TrackInfo>> moodboardTracks;
 
   @override
   void initState() {
@@ -113,7 +230,10 @@ class _ExplorePageState extends State<ExplorePage> {
     final random = Random();
     moodboardTracks = {
       for (var path in [...moodboardImagePaths, ...collectionsImagePaths])
-        path: (allTrackImagePaths.toList()..shuffle(random)).take(5).toList(),
+        path: (allTrackImagePaths.toList()..shuffle(random))
+            .take(5)
+            .map((imgPath) => allTrackDetails[imgPath]!)
+            .toList(),
     };
   }
 
@@ -197,8 +317,11 @@ class _ExplorePageState extends State<ExplorePage> {
                             title: moodboardTitles[imagePath] ?? 'Moodboard',
                             description: moodboardDescriptions[imagePath] ?? '',
                             tags: ['trending', 'mood', 'summer'],
-                            imagePaths: moodboardTracks[imagePath]!,
+                            imagePaths: moodboardTracks[imagePath]!
+                                .map((track) => track.imagePath)
+                                .toList(),
                             onTrackTap: (path) {},
+                            tracksInfo: moodboardTracks[imagePath]!,
                           ),
                         ),
                       );
@@ -267,15 +390,17 @@ class _ExplorePageState extends State<ExplorePage> {
                                 collectionDescriptions[imagePath] ??
                                 'A curated mix of moods and sounds.',
                             tags: ['curated', 'collection', 'vibes'],
-                            imagePaths: moodboardTracks[imagePath]!,
+                            imagePaths: moodboardTracks[imagePath]!
+                                .map((track) => track.imagePath)
+                                .toList(),
                             onTrackTap: (path) {},
+                            tracksInfo: moodboardTracks[imagePath]!,
                           ),
                         ),
                       );
                     },
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment
-                          .center, // <- this centers children horizontally
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
                           height: 170,
