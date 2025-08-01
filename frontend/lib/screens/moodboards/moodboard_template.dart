@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/song_screen.dart';
 import 'package:provider/provider.dart';
 import '../../theme_provider.dart';
 import '../../models/track_info.dart';
@@ -88,11 +89,16 @@ class MoodboardPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) =>
-                            FullImagePage(imagePath: track.imagePath),
+                        builder: (_) => SongScreen(
+                          title: track.name,
+                          artist: track.artist,
+                          imagePath: track.imagePath,
+                          genre: 'Unknown', // or track.genre if you have it
+                        ),
                       ),
                     );
                   },
+
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
