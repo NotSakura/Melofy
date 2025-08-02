@@ -21,9 +21,13 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
   bool isLoading = false;
   final TextEditingController _searchController = TextEditingController();
 
-  AudioPlayer _audioPlayer = AudioPlayer();
+  final AudioPlayer _audioPlayer = AudioPlayer();
   String? _currentlyPlayingTrack;
   String _activeTab = "Trending";
+  String? _selectedTrackName;
+  String? _selectedArtist;
+  String? _selectedPreviewUrl;
+  String? _selectedTrackId;
 
   @override
   void initState() {
@@ -37,7 +41,7 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
   }
 
   Future<void> _fetchRecommendedTracks() async {
-    await _searchMusic("Ed Sheeran", isTrending: false); // Example recommended artist
+    await _searchMusic("Ed Sheeran", isTrending: false);
   }
 
   Future<void> _searchMusic(String query, {bool? isTrending}) async {
@@ -58,7 +62,7 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
           } else if (isTrending == false) {
             recommendedTracks = data['results'];
           } else {
-            displayedTracks = data['results']; // Search overrides tab
+            displayedTracks = data['results'];
           }
           isLoading = false;
         });
@@ -71,15 +75,28 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
     }
   }
 
-  Future<void> _playPreview(String url, String trackId) async {
+  Future<void> _playPreview(String url, String trackId, String trackName, String artist) async {
     try {
       if (_currentlyPlayingTrack == trackId) {
+        // ✅ Deselect track if tapped again
         await _audioPlayer.stop();
-        setState(() => _currentlyPlayingTrack = null);
+        setState(() {
+          _currentlyPlayingTrack = null;
+          _selectedTrackId = null;
+          _selectedTrackName = null;
+          _selectedArtist = null;
+          _selectedPreviewUrl = null;
+        });
       } else {
         await _audioPlayer.stop();
         await _audioPlayer.play(UrlSource(url));
-        setState(() => _currentlyPlayingTrack = trackId);
+        setState(() {
+          _currentlyPlayingTrack = trackId;
+          _selectedTrackId = trackId;
+          _selectedTrackName = trackName;
+          _selectedArtist = artist;
+          _selectedPreviewUrl = url;
+        });
       }
     } catch (e) {
       print("Audio play error: $e");
@@ -107,15 +124,12 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
       backgroundColor: isDark ? Colors.black : Colors.white,
       appBar: AppBar(
         backgroundColor: isDark ? Colors.black : Colors.white,
-        title:
-            const Text('New Post', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('New Post', style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            if (widget.onBack != null) {
-              widget.onBack!();
-            }
+            if (widget.onBack != null) widget.onBack!();
             Navigator.pop(context);
           },
         ),
@@ -162,7 +176,7 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
 
           const SizedBox(height: 10),
 
-          /// ✅ Tabs: Trending & Recommended
+          /// ✅ Tabs
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
@@ -218,7 +232,12 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
                       return InkWell(
                         onTap: () {
                           if (previewUrl != null) {
-                            _playPreview(previewUrl, trackId);
+                            _playPreview(
+                              previewUrl,
+                              trackId,
+                              track['trackName'],
+                              track['artistName'],
+                            );
                           }
                         },
                         child: ListTile(
@@ -228,14 +247,9 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
                                 height: 50, width: 50, fit: BoxFit.cover),
                           ),
                           title: Text(track['trackName'] ?? '',
-                              style: TextStyle(
-                                  color:
-                                      isDark ? Colors.white : Colors.black)),
+                              style: TextStyle(color: isDark ? Colors.white : Colors.black)),
                           subtitle: Text(track['artistName'] ?? '',
-                              style: TextStyle(
-                                  color: isDark
-                                      ? Colors.white70
-                                      : Colors.black54)),
+                              style: TextStyle(color: isDark ? Colors.white70 : Colors.black54)),
                           trailing: Icon(
                             _currentlyPlayingTrack == trackId
                                 ? Icons.pause_circle_filled
@@ -248,9 +262,38 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
                     },
                   ),
           ),
+
+          /// ✅ "Choose" Button (Dims if no track selected)
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton(
+              onPressed: (_selectedPreviewUrl == null)
+                  ? null
+                  : () {
+                      Navigator.pop(context, {
+                        'trackName': _selectedTrackName,
+                        'artist': _selectedArtist,
+                        'previewUrl': _selectedPreviewUrl,
+                      });
+                    },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: (_selectedPreviewUrl == null)
+                    ? Colors.grey
+                    : Colors.purple[200],
+                foregroundColor: Colors.black,
+                minimumSize: const Size(double.infinity, 48),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+              ),
+              child: const Text(
+                "Choose",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 }
-
