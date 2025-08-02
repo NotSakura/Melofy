@@ -27,6 +27,7 @@ class _SelectMediaScreenState extends State<SelectMediaScreen> {
   bool _isResizing = false;
   String? _activeHandle;
 
+  /// ✅ Pick image from gallery
   Future<void> _pickSinglePhoto() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
@@ -37,6 +38,7 @@ class _SelectMediaScreenState extends State<SelectMediaScreen> {
     }
   }
 
+  /// ✅ Crop and navigate to music screen
   Future<void> _chooseImage() async {
     final RenderRepaintBoundary boundary =
         _repaintKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
@@ -75,21 +77,27 @@ class _SelectMediaScreenState extends State<SelectMediaScreen> {
           await croppedImage.toByteData(format: ui.ImageByteFormat.png);
 
       final croppedBytes = croppedData!.buffer.asUint8List();
-
       setState(() {
         _croppedImage = croppedBytes;
       });
 
-      // ✅ Navigate to SelectMusicScreen with cropped image
+      // ✅ Navigate to SelectMusicScreen
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => SelectMusicScreen(selectedImage: croppedBytes),
+          builder: (context) => SelectMusicScreen(
+            selectedImage: croppedBytes,
+            onBack: () {
+              // Keep crop tool active
+              setState(() {});
+            },
+          ),
         ),
       );
     }
   }
 
+  /// ✅ Crop interaction handlers
   void _onPanStart(DragStartDetails details) {
     const handleSize = 30.0;
     if ((details.localPosition - _cropRect.topLeft).distance < handleSize) {
@@ -140,7 +148,7 @@ class _SelectMediaScreenState extends State<SelectMediaScreen> {
         case "bottomLeft":
           newRect = Rect.fromPoints(
               Offset(details.localPosition.dx, _cropRect.top),
-              Offset(_cropRect.right, details.localPosition.dy));
+              Offset(_cropRect.right, _cropRect.bottom));
           break;
         case "bottomRight":
           newRect = Rect.fromPoints(_cropRect.topLeft, details.localPosition);
@@ -160,12 +168,11 @@ class _SelectMediaScreenState extends State<SelectMediaScreen> {
     _activeHandle = null;
   }
 
+  /// ✅ Back navigation behavior
   Future<bool> _onWillPop() async {
-    if (_selectedImage != null && _croppedImage == null) {
-      setState(() {
-        _selectedImage = null;
-      });
-      return false;
+    if (_selectedImage != null) {
+      setState(() => _croppedImage = null); // Stay in crop mode
+      return true;
     }
     return true;
   }
@@ -186,70 +193,84 @@ class _SelectMediaScreenState extends State<SelectMediaScreen> {
             },
           ),
         ),
-        body: _selectedImage == null && _croppedImage == null
+        body: _selectedImage == null
             ? Center(
                 child: ElevatedButton(
                   onPressed: _pickSinglePhoto,
                   child: const Text("Pick Photo from Library"),
                 ),
               )
-            : _croppedImage == null
-                ? Column(
-                    children: [
-                      Expanded(
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            _imageBounds = Rect.fromLTWH(
-                              0,
-                              0,
-                              constraints.maxWidth,
-                              constraints.maxHeight,
-                            );
+            : Column(
+                children: [
+                  Expanded(
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        _imageBounds =
+                            Rect.fromLTWH(0, 0, constraints.maxWidth, constraints.maxHeight);
 
-                            if (_cropRect == Rect.zero) {
-                              _cropRect = _imageBounds;
-                            }
+                        if (_cropRect == Rect.zero) {
+                          _cropRect = _imageBounds; // Start crop full size
+                        }
 
-                            return Stack(
-                              children: [
-                                RepaintBoundary(
-                                  key: _repaintKey,
-                                  child: Image.file(
-                                    _selectedImage!,
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onPanStart: _onPanStart,
-                                  onPanUpdate: _onPanUpdate,
-                                  onPanEnd: _onPanEnd,
-                                  child: CustomPaint(
-                                    size: Size.infinite,
-                                    painter: _CropOverlayPainter(_cropRect),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: ElevatedButton(
-                          onPressed: _chooseImage,
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(double.infinity, buttonHeight),
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.black,
+                        return Stack(
+                          children: [
+                            RepaintBoundary(
+                              key: _repaintKey,
+                              child: Image.file(
+                                _selectedImage!,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
+                            ),
+                            GestureDetector(
+                              onPanStart: _onPanStart,
+                              onPanUpdate: _onPanUpdate,
+                              onPanEnd: _onPanEnd,
+                              child: CustomPaint(
+                                size: Size.infinite,
+                                painter: _CropOverlayPainter(_cropRect),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+
+                  /// ✅ Buttons Row
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: _pickSinglePhoto,
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(double.infinity, buttonHeight),
+                              backgroundColor: const ui.Color.fromARGB(255, 255, 187, 109),
+                              foregroundColor: Colors.black,
+                            ),
+                            child: const Text("Select Media"),
                           ),
-                          child: const Text("Choose"),
                         ),
-                      ),
-                    ],
-                  )
-                : const SizedBox.shrink(),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: _chooseImage,
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(double.infinity, buttonHeight),
+                              backgroundColor: const ui.Color.fromARGB(255, 189, 130, 203),
+                              foregroundColor: Colors.black,
+                            ),
+                            child: const Text("Choose"),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
       ),
     );
   }
@@ -278,6 +299,7 @@ class _CropOverlayPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
     canvas.drawRect(cropRect, borderPaint);
 
+    // ✅ Grid lines
     final guidePaint = Paint()
       ..color = Colors.white.withOpacity(0.7)
       ..strokeWidth = 1;
@@ -296,6 +318,7 @@ class _CropOverlayPainter extends CustomPainter {
       );
     }
 
+    // ✅ Corner handles
     const handleSize = 16.0;
     final handleBorder = Paint()
       ..color = Colors.black
@@ -317,3 +340,4 @@ class _CropOverlayPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
+
