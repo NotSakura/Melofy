@@ -25,7 +25,9 @@ class BottomNavBar extends StatelessWidget {
         destination = const ExplorePage();
         break;
       case 3:
-        destination = const Scaffold(body: Center(child: Text('Notifications')));
+        destination = const Scaffold(
+          body: Center(child: Text('Notifications')),
+        );
         break;
       case 4:
         destination = const Scaffold(body: Center(child: Text('Profile')));
@@ -96,13 +98,13 @@ class BottomNavBar extends StatelessWidget {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (result == 'media') {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const SelectMediaScreen()),
-        );
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => const SelectMediaScreen()));
       } else if (result == 'moodboard') {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const CreateMoodboardPage()),
-        );
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => const CreateMoodboardPage()));
       }
     });
   }
@@ -123,7 +125,10 @@ class BottomNavBar extends StatelessWidget {
         BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
         BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
         BottomNavigationBarItem(icon: Icon(Icons.add_box), label: ''),
-        BottomNavigationBarItem(icon: Icon(Icons.notifications_none), label: ''),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.notifications_none),
+          label: '',
+        ),
         BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ''),
       ],
     );

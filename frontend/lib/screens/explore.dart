@@ -1,8 +1,24 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../theme_provider.dart';
-import 'moodboards/trending_moodboard1.dart';
+import 'moodboards/moodboard_template.dart';
 import 'package:frontend/widgets/bottom_nav_bar.dart';
+import '../models/track_info.dart'; // Shared TrackInfo model
+
+Map<String, List<TrackInfo>> convertToTrackInfoMap(
+  Map<String, List<String>> rawMap,
+  Map<String, TrackInfo> allTrackDetails,
+) {
+  final Map<String, List<TrackInfo>> converted = {};
+  rawMap.forEach((key, listOfImagePaths) {
+    converted[key] = listOfImagePaths
+        .map((imagePath) => allTrackDetails[imagePath])
+        .whereType<TrackInfo>() // skips any nulls safely
+        .toList();
+  });
+  return converted;
+}
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
@@ -22,6 +38,23 @@ class _ExplorePageState extends State<ExplorePage> {
     'assets/images/explore_page/moodboard5.jpg',
   ];
 
+  final Map<String, String> moodboardTitles = {
+    'assets/images/explore_page/moodboard1.jpg': 'Sunset Vibes',
+    'assets/images/explore_page/moodboard2.jpg': 'Late Night Drive',
+    'assets/images/explore_page/moodboard3.png': 'Indie Spark',
+    'assets/images/explore_page/moodboard4.jpg': 'Lo-fi Lounge',
+    'assets/images/explore_page/moodboard5.jpg': 'Dreamscape',
+  };
+
+  final Map<String, String> moodboardDescriptions = {
+    'assets/images/explore_page/moodboard1.jpg': 'Warm tones and mellow tunes.',
+    'assets/images/explore_page/moodboard2.jpg':
+        'Moody beats for quiet drives.',
+    'assets/images/explore_page/moodboard3.png': 'Fresh finds and indie gems.',
+    'assets/images/explore_page/moodboard4.jpg': 'Relax and unwind.',
+    'assets/images/explore_page/moodboard5.jpg': 'Echoes of the surreal.',
+  };
+
   final List<String> collectionsImagePaths = [
     'assets/images/explore_page/collection1.jpg',
     'assets/images/explore_page/collection2.jpg',
@@ -33,9 +66,180 @@ class _ExplorePageState extends State<ExplorePage> {
     'assets/images/explore_page/collection8.jpg',
   ];
 
+  final Map<String, String> collectionTitles = {
+    'assets/images/explore_page/collection1.jpg': 'Calming',
+    'assets/images/explore_page/collection2.jpg': 'Rock and Roll',
+    'assets/images/explore_page/collection3.jpg': 'Broadway',
+    'assets/images/explore_page/collection4.jpg': 'Country',
+    'assets/images/explore_page/collection5.jpg': 'Jazz',
+    'assets/images/explore_page/collection6.jpg': 'Children\'s Music',
+    'assets/images/explore_page/collection7.jpg': 'Disco',
+    'assets/images/explore_page/collection8.jpg': 'Acoustic Escape',
+  };
+
+  final Map<String, String> collectionDescriptions = {
+    'assets/images/explore_page/collection1.jpg':
+        'Soft, soothing sounds to relax your mind.',
+    'assets/images/explore_page/collection2.jpg':
+        'High-energy classics and new rock anthems.',
+    'assets/images/explore_page/collection3.jpg':
+        'Show-stopping tunes from the theater world.',
+    'assets/images/explore_page/collection4.jpg':
+        'Heartfelt stories and melodies from the countryside.',
+    'assets/images/explore_page/collection5.jpg':
+        'Smooth and soulful jazz rhythms.',
+    'assets/images/explore_page/collection6.jpg':
+        'Fun and playful songs for kids of all ages.',
+    'assets/images/explore_page/collection7.jpg':
+        'Groovy beats to get you dancing all night.',
+    'assets/images/explore_page/collection8.jpg':
+        'Raw and unplugged acoustic performances.',
+  };
+
+  final List<String> allTrackImagePaths = [
+    'assets/images/explore_page/tracks/song1.jpg',
+    'assets/images/explore_page/tracks/song2.jpg',
+    'assets/images/explore_page/tracks/song3.jpg',
+    'assets/images/explore_page/tracks/song4.jpg',
+    'assets/images/explore_page/tracks/song5.jpg',
+    'assets/images/explore_page/tracks/song6.jpg',
+    'assets/images/explore_page/tracks/song7.jpg',
+    'assets/images/explore_page/tracks/song8.jpg',
+    'assets/images/explore_page/tracks/song9.jpg',
+    'assets/images/explore_page/tracks/song10.jpg',
+    'assets/images/explore_page/tracks/song11.jpg',
+    'assets/images/explore_page/tracks/song12.png',
+    'assets/images/explore_page/tracks/song13.jpg',
+    'assets/images/explore_page/tracks/song14.png',
+    'assets/images/explore_page/tracks/song15.jpg',
+    'assets/images/explore_page/tracks/song16.jpg',
+    'assets/images/explore_page/tracks/song17.jpg',
+    'assets/images/explore_page/tracks/song18.jpg',
+    'assets/images/explore_page/tracks/song19.jpg',
+    'assets/images/explore_page/tracks/song20.jpg',
+  ];
+
+  final Map<String, TrackInfo> allTrackDetails = {
+    'assets/images/explore_page/tracks/song1.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song1.jpg',
+      name: 'Hey Ya!',
+      artist: 'OutKast',
+    ),
+    'assets/images/explore_page/tracks/song2.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song2.jpg',
+      name: 'Rolling in the Deep',
+      artist: 'Adele',
+    ),
+    'assets/images/explore_page/tracks/song3.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song3.jpg',
+      name: 'Umbrella',
+      artist: 'Rihanna',
+    ),
+    'assets/images/explore_page/tracks/song4.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song4.jpg',
+      name: 'Clocks',
+      artist: 'Coldplay',
+    ),
+    'assets/images/explore_page/tracks/song5.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song5.jpg',
+      name: 'Hips Don’t Lie',
+      artist: 'Shakira',
+    ),
+    'assets/images/explore_page/tracks/song6.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song6.jpg',
+      name: 'Happy',
+      artist: 'Pharrell Williams',
+    ),
+    'assets/images/explore_page/tracks/song7.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song7.jpg',
+      name: 'Bad Romance',
+      artist: 'Lady Gaga',
+    ),
+    'assets/images/explore_page/tracks/song8.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song8.jpg',
+      name: 'Get Lucky',
+      artist: 'Daft Punk',
+    ),
+    'assets/images/explore_page/tracks/song9.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song9.jpg',
+      name: 'Shape of You',
+      artist: 'Ed Sheeran',
+    ),
+    'assets/images/explore_page/tracks/song10.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song10.jpg',
+      name: 'Firework',
+      artist: 'Katy Perry',
+    ),
+    'assets/images/explore_page/tracks/song11.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song11.jpg',
+      name: 'Lose Yourself',
+      artist: 'Eminem',
+    ),
+    'assets/images/explore_page/tracks/song12.png': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song12.png',
+      name: 'Uptown Funk',
+      artist: 'Mark Ronson ft. Bruno Mars',
+    ),
+    'assets/images/explore_page/tracks/song13.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song13.jpg',
+      name: 'Rolling in the Deep',
+      artist: 'Adele',
+    ),
+    'assets/images/explore_page/tracks/song14.png': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song14.png',
+      name: 'Can’t Stop the Feeling!',
+      artist: 'Justin Timberlake',
+    ),
+    'assets/images/explore_page/tracks/song15.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song15.jpg',
+      name: 'Royals',
+      artist: 'Lorde',
+    ),
+    'assets/images/explore_page/tracks/song16.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song16.jpg',
+      name: 'Seven Nation Army',
+      artist: 'The White Stripes',
+    ),
+    'assets/images/explore_page/tracks/song17.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song17.jpg',
+      name: 'Someone Like You',
+      artist: 'Adele',
+    ),
+    'assets/images/explore_page/tracks/song18.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song18.jpg',
+      name: 'Toxic',
+      artist: 'Britney Spears',
+    ),
+    'assets/images/explore_page/tracks/song19.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song19.jpg',
+      name: 'Boulevard of Broken Dreams',
+      artist: 'Green Day',
+    ),
+    'assets/images/explore_page/tracks/song20.jpg': TrackInfo(
+      imagePath: 'assets/images/explore_page/tracks/song20.jpg',
+      name: 'Chandelier',
+      artist: 'Sia',
+    ),
+  };
+
+  late final Map<String, List<TrackInfo>> moodboardTracks;
+
+  @override
+  void initState() {
+    super.initState();
+    final random = Random();
+    moodboardTracks = {
+      for (var path in [...moodboardImagePaths, ...collectionsImagePaths])
+        path: (allTrackImagePaths.toList()..shuffle(random))
+            .take(5)
+            .map((imgPath) => allTrackDetails[imgPath]!)
+            .toList(),
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context); // Get current theme
+    final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
@@ -44,7 +248,9 @@ class _ExplorePageState extends State<ExplorePage> {
         backgroundColor: theme.scaffoldBackgroundColor,
         title: Text(
           "Explore",
-          style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         actions: [
           IconButton(
@@ -67,7 +273,7 @@ class _ExplorePageState extends State<ExplorePage> {
                 hintText: 'Search artists, songs or themes',
                 hintStyle: TextStyle(color: theme.hintColor),
                 prefixIcon: Icon(Icons.search, color: theme.iconTheme.color),
-                fillColor: theme.cardColor,
+                fillColor: isDark ? theme.cardColor : Colors.white,
                 filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -93,49 +299,71 @@ class _ExplorePageState extends State<ExplorePage> {
               searchText.isEmpty
                   ? 'Trending Moodboards'
                   : 'Searching for: "$searchText"',
-              style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 16),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: List.generate(moodboardImagePaths.length, (index) {
+                children: moodboardImagePaths.map((imagePath) {
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const TrendingMoodboard1(),
+                          builder: (context) => MoodboardPage(
+                            title: moodboardTitles[imagePath] ?? 'Moodboard',
+                            description: moodboardDescriptions[imagePath] ?? '',
+                            tags: ['trending', 'mood', 'summer'],
+                            imagePaths: moodboardTracks[imagePath]!
+                                .map((track) => track.imagePath)
+                                .toList(),
+                            onTrackTap: (path) {},
+                            tracksInfo: moodboardTracks[imagePath]!,
+                          ),
                         ),
                       );
                     },
-                    child: Container(
-                      width: 150,
-                      height: 150,
-                      margin: const EdgeInsets.only(right: 8),
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(moodboardImagePaths[index]),
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 4,
-                            offset: Offset(2, 2),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 150,
+                          height: 150,
+                          margin: const EdgeInsets.only(right: 8),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(imagePath),
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black26,
+                                blurRadius: 4,
+                                offset: Offset(2, 2),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          moodboardTitles[imagePath] ?? '',
+                          style: theme.textTheme.bodyMedium,
+                        ),
+                      ],
                     ),
                   );
-                }),
+                }).toList(),
               ),
             ),
             const SizedBox(height: 16),
             Text(
               'Recommended Collections',
-              style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 16),
             Expanded(
@@ -145,35 +373,61 @@ class _ExplorePageState extends State<ExplorePage> {
                   crossAxisCount: 2,
                   mainAxisSpacing: 16,
                   crossAxisSpacing: 16,
-                  childAspectRatio: 1,
+                  childAspectRatio: 0.85,
                 ),
                 itemCount: collectionsImagePaths.length,
                 itemBuilder: (context, index) {
+                  final imagePath = collectionsImagePaths[index];
                   return InkWell(
                     borderRadius: BorderRadius.circular(12),
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const TrendingMoodboard1(),
+                          builder: (context) => MoodboardPage(
+                            title: collectionTitles[imagePath] ?? 'Collection',
+                            description:
+                                collectionDescriptions[imagePath] ??
+                                'A curated mix of moods and sounds.',
+                            tags: ['curated', 'collection', 'vibes'],
+                            imagePaths: moodboardTracks[imagePath]!
+                                .map((track) => track.imagePath)
+                                .toList(),
+                            onTrackTap: (path) {},
+                            tracksInfo: moodboardTracks[imagePath]!,
+                          ),
                         ),
                       );
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(collectionsImagePaths[index]),
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 4,
-                            offset: Offset(2, 2),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 170,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(imagePath),
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black26,
+                                blurRadius: 4,
+                                offset: Offset(2, 2),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          collectionTitles[imagePath] ?? '',
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ),
                   );
                 },

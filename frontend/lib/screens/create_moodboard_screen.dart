@@ -3,6 +3,7 @@ import 'package:frontend/widgets/bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 import '../theme_provider.dart';
 import '../screens/moodboards/moodboard_template.dart';
+import '../models/track_info.dart'; // <-- import TrackInfo here
 
 class CreateMoodboardPage extends StatefulWidget {
   const CreateMoodboardPage({super.key});
@@ -17,26 +18,24 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
 
   List<String> selectedTags = ['Chill', 'Indie'];
 
-  // List of saved songs with details
-  final List<Map<String, String>> savedSongs = [
+  final List<Map<String, String>> savedMedia = [
     {
-      'imagePath': 'assets/images/create_moodboard_page/1989TV_Cover.webp',
+      'imagePath': 'assets/images/create_moodboard_page/image2.jpg',
       'title': 'Wonderland',
       'artist': 'Taylor Swift',
     },
     {
-      'imagePath': 'assets/images/create_moodboard_page/ThatsSoTrue.jpeg',
+      'imagePath': 'assets/images/create_moodboard_page/image1.jpg',
       'title': 'That’s so true',
       'artist': 'Gracie Abrams',
     },
     {
-      'imagePath': 'assets/images/create_moodboard_page/BlindingLights.png',
+      'imagePath': 'assets/images/create_moodboard_page/image3.jpg',
       'title': 'Blinding Lights',
       'artist': 'The Weeknd',
     },
   ];
 
-  // Track selected songs by their image paths
   List<String> selectedImages = [];
 
   void _toggleSelectImage(String imagePath) {
@@ -56,6 +55,19 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
       );
       return;
     }
+
+    // Build the tracksInfo list for selected images using shared TrackInfo
+    final tracksInfo = savedMedia
+        .where((song) => selectedImages.contains(song['imagePath']))
+        .map(
+          (song) => TrackInfo(
+            imagePath: song['imagePath']!,
+            name: song['title']!,
+            artist: song['artist']!,
+          ),
+        )
+        .toList();
+
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -69,6 +81,7 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
               context,
             ).showSnackBar(SnackBar(content: Text('Tapped: $path')));
           },
+          tracksInfo: tracksInfo, // pass typed tracksInfo list
         ),
       ),
     );
@@ -76,12 +89,17 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Create New Moodboard"),
         actions: [
           IconButton(
-            icon: const Icon(Icons.wb_sunny),
+            icon: Icon(
+              isDark ? Icons.wb_sunny : Icons.nights_stay,
+              color: theme.iconTheme.color,
+            ),
             onPressed: () {
               Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
             },
@@ -94,14 +112,15 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Title TextField
               TextField(
                 controller: _titleController,
                 style: const TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                   hintText: 'Moodboard Title',
-                  hintStyle: const TextStyle(color: Colors.black54),
-                  fillColor: Colors.white,
+                  hintStyle: TextStyle(
+                    color: isDark ? Colors.white : Colors.black54,
+                  ),
+                  fillColor: isDark ? theme.cardColor : Colors.white,
                   filled: true,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -114,15 +133,16 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                 ),
               ),
               const SizedBox(height: 16),
-              // Description TextField
               TextField(
                 controller: _descriptionController,
                 style: const TextStyle(color: Colors.black),
                 maxLines: 3,
                 decoration: InputDecoration(
                   hintText: 'Description',
-                  hintStyle: const TextStyle(color: Colors.black54),
-                  fillColor: Colors.white,
+                  hintStyle: TextStyle(
+                    color: isDark ? Colors.white : Colors.black54,
+                  ),
+                  fillColor: isDark ? theme.cardColor : Colors.white,
                   filled: true,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -135,7 +155,6 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                 ),
               ),
               const SizedBox(height: 24),
-              // Buttons Row
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -170,26 +189,27 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
                 ],
               ),
               const SizedBox(height: 30),
-              // Saved Songs header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
                   Text(
-                    'Saved Songs',
+                    'Saved Media',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
-              const Text('Tap on song to select', style: TextStyle(fontSize: 12)),
+              const Text(
+                'Tap on song to select',
+                style: TextStyle(fontSize: 12),
+              ),
               const SizedBox(height: 12),
-              // Scrollable grid of songs
               Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
                   childAspectRatio: 0.8,
-                  children: savedSongs.map((song) {
+                  children: savedMedia.map((song) {
                     final imagePath = song['imagePath']!;
                     return ImageCard(
                       imagePath: imagePath,
@@ -205,7 +225,7 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavBar(currentIndex: 2),
+      bottomNavigationBar: const BottomNavBar(currentIndex: 2),
     );
   }
 }
