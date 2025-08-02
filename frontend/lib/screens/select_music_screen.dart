@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:audioplayers/audioplayers.dart';
+import 'full_screen_media.dart';
 
 class SelectMusicScreen extends StatefulWidget {
   final Uint8List selectedImage;
@@ -49,8 +50,7 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
     setState(() => isLoading = true);
 
     try {
-      final url = Uri.parse(
-          "https://itunes.apple.com/search?term=$query&entity=musicTrack&limit=10");
+      final url = Uri.parse("https://itunes.apple.com/search?term=$query&entity=musicTrack&limit=10");
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
@@ -78,7 +78,6 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
   Future<void> _playPreview(String url, String trackId, String trackName, String artist) async {
     try {
       if (_currentlyPlayingTrack == trackId) {
-        // ✅ Deselect track if tapped again
         await _audioPlayer.stop();
         setState(() {
           _currentlyPlayingTrack = null;
@@ -263,20 +262,33 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
                   ),
           ),
 
-          /// ✅ "Choose" Button (Dims if no track selected)
+          /// ✅ "Choose" Button (Triggers Fullscreen Preview)
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
               onPressed: (_selectedPreviewUrl == null)
-                  ? null
-                  : () {
-                      Navigator.pop(context, {
-                        'trackName': _selectedTrackName,
-                        'artist': _selectedArtist,
-                        'previewUrl': _selectedPreviewUrl,
-                      });
-                    },
-              style: ElevatedButton.styleFrom(
+                ? null
+                : () async {
+                    await _audioPlayer.stop(); // ✅ Stop preview playback before fullscreen
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FullScreenMedia(
+                          imageBytes: widget.selectedImage,
+                          previewUrl: _selectedPreviewUrl,
+                          songTitle: _selectedTrackName,
+                          artistName: _selectedArtist,
+                          autoPlay: true,
+                        ),
+                      ),
+                    );
+
+                    /// ✅ After returning, clear current playback so icon shows "play"
+                    setState(() {
+                      _currentlyPlayingTrack = null; // Ensure it shows play icon
+                    });
+                  },
+                          style: ElevatedButton.styleFrom(
                 backgroundColor: (_selectedPreviewUrl == null)
                     ? Colors.grey
                     : Colors.purple[200],
