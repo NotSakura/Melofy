@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
 import '../theme_provider.dart';
 import 'full_screen_media.dart';
 
@@ -27,6 +29,41 @@ class SongDetailsPage extends StatefulWidget {
 }
 
 class _SongDetailsPageState extends State<SongDetailsPage> {
+  String? genre;
+  bool isLoadingGenre = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchGenreFromiTunes();
+  }
+
+  /// ✅ Fetch genre from iTunes API
+  Future<void> _fetchGenreFromiTunes() async {
+    if (widget.title.isEmpty || widget.artist.isEmpty) return;
+
+    final query = Uri.encodeComponent("${widget.title} ${widget.artist}");
+    final url = Uri.parse("https://itunes.apple.com/search?term=$query&entity=musicTrack&limit=1");
+
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['results'] != null && data['results'].isNotEmpty) {
+          setState(() {
+            genre = data['results'][0]['primaryGenreName'] ?? "Unknown";
+            isLoadingGenre = false;
+          });
+        }
+      } else {
+        setState(() => isLoadingGenre = false);
+      }
+    } catch (e) {
+      print("Error fetching genre: $e");
+      setState(() => isLoadingGenre = false);
+    }
+  }
+
   Future<void> _openAppleMusic() async {
     if (widget.trackViewUrl != null) {
       final uri = Uri.parse(widget.trackViewUrl!);
@@ -49,22 +86,11 @@ class _SongDetailsPageState extends State<SongDetailsPage> {
           'Song Details',
           style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              isDark ? Icons.wb_sunny : Icons.nights_stay,
-              color: theme.iconTheme.color,
-            ),
-            onPressed: () {
-              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
-            },
-          ),
-        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          /// ✅ Header Image (Tap to fullscreen with auto-play if preview available)
+          /// ✅ Header Image with Play Icon Overlay
           GestureDetector(
             onTap: () {
               Navigator.push(
@@ -75,36 +101,82 @@ class _SongDetailsPageState extends State<SongDetailsPage> {
                     previewUrl: widget.previewUrl,
                     songTitle: widget.title,
                     artistName: widget.artist,
-                    autoPlay: widget.previewUrl != null, // ✅ Auto-play only if preview exists
+                    autoPlay: widget.previewUrl != null,
                   ),
                 ),
               );
             },
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              ),
-              child: widget.image.startsWith('http')
-                  ? Image.network(widget.image, height: 400, width: double.infinity, fit: BoxFit.cover)
-                  : Image.asset(widget.image, height: 400, width: double.infinity, fit: BoxFit.cover),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
+                  child: widget.image.startsWith('http')
+                      ? Image.network(widget.image, height: 400, width: double.infinity, fit: BoxFit.cover)
+                      : Image.asset(widget.image, height: 400, width: double.infinity, fit: BoxFit.cover),
+                ),
+                /// Play Icon Overlay
+                Container(
+                  height: 400,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.2),
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
+                  ),
+                  child: const Center(
+                    child: Icon(Icons.play_circle_fill, color: Colors.white, size: 80),
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 24),
 
-          /// ✅ Song Info + Buttons
+          /// ✅ Song Info
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.title,
-                    style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
+                /// Song Title
+                Text(
+                  widget.title,
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 const SizedBox(height: 8),
-                Text(widget.artist,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.textTheme.bodyMedium?.color?.withOpacity(0.7),
-                    )),
+
+                /// Artist (Adapts to Theme)
+                Text(
+                  widget.artist,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? Colors.white : Colors.black,
+                  ),
+                ),
+
+                /// Genre (Adapts to Theme)
+                const SizedBox(height: 6),
+                isLoadingGenre
+                    ? Text(
+                        "Loading genre...",
+                        style: TextStyle(color: isDark ? Colors.white70 : Colors.grey),
+                      )
+                    : Text(
+                        "Genre: ${genre ?? "Unknown"}",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+
                 const SizedBox(height: 20),
 
                 /// ✅ Add to Moodboard Button
@@ -172,3 +244,6 @@ class _SongDetailsPageState extends State<SongDetailsPage> {
     );
   }
 }
+
+
+

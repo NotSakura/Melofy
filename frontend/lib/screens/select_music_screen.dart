@@ -137,22 +137,73 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// ✅ Image Preview
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.memory(widget.selectedImage,
-                  height: 180, width: double.infinity, fit: BoxFit.cover),
+          /// ✅ Image Preview (Tap only works if song is selected)
+          GestureDetector(
+            onTap: () async {
+              if (_selectedPreviewUrl != null) {
+                await _audioPlayer.stop();
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FullScreenMedia(
+                      imageBytes: widget.selectedImage,
+                      previewUrl: _selectedPreviewUrl,
+                      songTitle: _selectedTrackName,
+                      artistName: _selectedArtist,
+                      autoPlay: true,
+                    ),
+                  ),
+                );
+
+                /// Reset preview state when returning
+                setState(() {
+                  _currentlyPlayingTrack = null;
+                  _selectedPreviewUrl = null; // disable preview until reselect
+                });
+              }
+            },
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.memory(
+                    widget.selectedImage,
+                    height: 180,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                if (_selectedPreviewUrl != null) // Show overlay ONLY if track selected
+                  Container(
+                    height: 180,
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.play_circle_fill, color: Colors.white, size: 50),
+                          SizedBox(height: 6),
+                          Text(
+                            "Preview",
+                            style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
 
           const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
             child: Text("Choose a music track",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           ),
-          const SizedBox(height: 8),
 
           /// ✅ Search Bar
           Padding(
@@ -262,33 +313,14 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
                   ),
           ),
 
-          /// ✅ "Choose" Button (Triggers Fullscreen Preview)
+          /// ✅ Choose Button
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
-              onPressed: (_selectedPreviewUrl == null)
-                ? null
-                : () async {
-                    await _audioPlayer.stop(); // ✅ Stop preview playback before fullscreen
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FullScreenMedia(
-                          imageBytes: widget.selectedImage,
-                          previewUrl: _selectedPreviewUrl,
-                          songTitle: _selectedTrackName,
-                          artistName: _selectedArtist,
-                          autoPlay: true,
-                        ),
-                      ),
-                    );
-
-                    /// ✅ After returning, clear current playback so icon shows "play"
-                    setState(() {
-                      _currentlyPlayingTrack = null; // Ensure it shows play icon
-                    });
-                  },
-                          style: ElevatedButton.styleFrom(
+              onPressed: (_selectedPreviewUrl == null) ? null : () {
+                // Navigate to SavePost or further logic
+              },
+              style: ElevatedButton.styleFrom(
                 backgroundColor: (_selectedPreviewUrl == null)
                     ? Colors.grey
                     : Colors.purple[200],
@@ -309,3 +341,4 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
     );
   }
 }
+
