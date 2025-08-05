@@ -124,11 +124,19 @@ class _ExplorePageState extends State<ExplorePage> {
       imagePath: 'assets/images/explore_page/tracks/song1.jpg',
       name: 'Hey Ya!',
       artist: 'OutKast',
+      cover:
+          'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/a3/35/54/a33554b6-4122-cdfd-29e8-d17897280263/dj.yiwizfgg.jpg/592x592bb.webp',
+      appleMusicUrl:
+          'https://music.apple.com/us/album/hey-ya/1032178894?i=1032178989',
     ),
     'assets/images/explore_page/tracks/song2.jpg': TrackInfo(
       imagePath: 'assets/images/explore_page/tracks/song2.jpg',
       name: 'Rolling in the Deep',
       artist: 'Adele',
+      cover:
+          'https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/d8/e3/f9/d8e3f9ea-d6fe-9a1b-9f13-109983d3062e/191404113868.png/592x592bb.webp',
+      appleMusicUrl:
+          'https://music.apple.com/us/album/rolling-in-the-deep/1544491232?i=1544491233',
     ),
     'assets/images/explore_page/tracks/song3.jpg': TrackInfo(
       imagePath: 'assets/images/explore_page/tracks/song3.jpg',

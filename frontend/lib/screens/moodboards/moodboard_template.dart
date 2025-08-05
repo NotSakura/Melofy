@@ -94,12 +94,9 @@ class MoodboardPage extends StatelessWidget {
                           title: track.name,
                           artist: track.artist,
                           image: track.imagePath, // Local or UI image
-                          cover: track
-                              .imagePath, // You don't have separate Apple cover URLs, so reuse for now
-                          previewUrl:
-                              null, // Optional, use null or fetch if available
-                          trackViewUrl:
-                              null, // Optional, use null or fetch if available
+                          cover: track.cover ?? track.imagePath,
+                          previewUrl: null, // or track.previewUrl if available
+                          trackViewUrl: track.appleMusicUrl, // ← Correct field
                         ),
                       ),
                     );

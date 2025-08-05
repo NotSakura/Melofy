@@ -3,7 +3,7 @@ import 'package:frontend/widgets/bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 import '../theme_provider.dart';
 import '../screens/moodboards/moodboard_template.dart';
-import '../models/track_info.dart'; // <-- import TrackInfo here
+import '../models/track_info.dart';
 
 class CreateMoodboardPage extends StatefulWidget {
   const CreateMoodboardPage({super.key});
