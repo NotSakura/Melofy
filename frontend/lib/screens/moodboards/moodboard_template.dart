@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/song_details_page.dart';
 import 'package:frontend/screens/song_screen.dart';
 import 'package:provider/provider.dart';
 import '../../theme_provider.dart';
@@ -89,11 +90,16 @@ class MoodboardPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => SongScreen(
+                        builder: (_) => SongDetailsPage(
                           title: track.name,
                           artist: track.artist,
-                          imagePath: track.imagePath,
-                          genre: 'Unknown', // or track.genre if you have it
+                          image: track.imagePath, // Local or UI image
+                          cover: track
+                              .imagePath, // You don't have separate Apple cover URLs, so reuse for now
+                          previewUrl:
+                              null, // Optional, use null or fetch if available
+                          trackViewUrl:
+                              null, // Optional, use null or fetch if available
                         ),
                       ),
                     );
