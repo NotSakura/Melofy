@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/screens/home.dart';
 import 'package:frontend/screens/explore.dart';
 import 'package:frontend/screens/create_moodboard_screen.dart';
+import 'package:frontend/screens/notifications.dart';
 import 'package:frontend/screens/select_media_screen.dart';
 import 'package:frontend/screens/user_profile.dart';
 
@@ -26,9 +27,7 @@ class BottomNavBar extends StatelessWidget {
         destination = const ExplorePage();
         break;
       case 3:
-        destination = const Scaffold(
-          body: Center(child: Text('Notifications')),
-        );
+        destination = const NotificationsPage();
         break;
       case 4:
         destination = const UserProfilePage();
