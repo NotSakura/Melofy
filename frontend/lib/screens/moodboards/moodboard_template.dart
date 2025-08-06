@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/song_details_page.dart';
+import 'package:frontend/widgets/bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 import '../../theme_provider.dart';
 import '../../models/track_info.dart';
@@ -86,8 +87,9 @@ class MoodboardPage extends StatelessWidget {
                 final track = tracksInfo[index];
                 return InkWell(
                   borderRadius: BorderRadius.circular(12),
+                  // Inside SliverGrid's delegate
                   onTap: () async {
-                    onTrackTap(track.imagePath);
+                    // Removed: onTrackTap(track.imagePath);
 
                     String? previewUrl;
                     String? trackViewUrl;
@@ -182,6 +184,7 @@ class MoodboardPage extends StatelessWidget {
           const SliverPadding(padding: EdgeInsets.only(bottom: 24)),
         ],
       ),
+      bottomNavigationBar: const BottomNavBar(currentIndex: 0),
     );
   }
 }

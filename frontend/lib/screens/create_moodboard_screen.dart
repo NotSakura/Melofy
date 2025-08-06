@@ -1,67 +1,8 @@
 import 'package:flutter/material.dart';
-
-// TrackInfo class for demo
-class TrackInfo {
-  final String name;
-  final String artist;
-  final String imagePath;
-
-  TrackInfo({
-    required this.name,
-    required this.artist,
-    required this.imagePath,
-  });
-}
-
-// Stub MoodboardPage to show passed data
-class MoodboardPage extends StatelessWidget {
-  final String title;
-  final String description;
-  final List<String> tags;
-  final List<String> imagePaths;
-  final List<TrackInfo> tracksInfo;
-  final void Function(String) onTrackTap;
-
-  const MoodboardPage({
-    super.key,
-    required this.title,
-    required this.description,
-    required this.tags,
-    required this.imagePaths,
-    required this.tracksInfo,
-    required this.onTrackTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          Text('Description: $description'),
-          const SizedBox(height: 8),
-          Text('Tags: ${tags.join(", ")}'),
-          const SizedBox(height: 8),
-          const Text('Tracks:', style: TextStyle(fontWeight: FontWeight.bold)),
-          ...tracksInfo.map(
-            (track) => ListTile(
-              leading: Image.asset(
-                track.imagePath,
-                width: 50,
-                height: 50,
-                fit: BoxFit.cover,
-              ),
-              title: Text(track.name),
-              subtitle: Text(track.artist),
-              onTap: () => onTrackTap(track.imagePath),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+import 'package:frontend/models/moodboard.dart';
+import 'package:frontend/models/track_info.dart'; // Use shared TrackInfo here
+import '../data/global_moodboards.dart';
+import './moodboards/moodboard_template.dart';
 
 class CreateMoodboardPage extends StatefulWidget {
   const CreateMoodboardPage({super.key});
@@ -150,29 +91,40 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
       return;
     }
 
-    // Combine all media to find selected
     final allMedia = [...savedMedia, ...suggestedMedia];
 
     final tracksInfo = allMedia
         .where((song) => selectedImages.contains(song['imagePath']))
         .map(
           (song) => TrackInfo(
+            imagePath: song['imagePath']!,
             name: song['title'] ?? '',
             artist: song['artist'] ?? '',
-            imagePath: song['imagePath']!,
+            cover: null,
+            appleMusicUrl: null,
           ),
         )
         .toList();
+
+    final newMoodboard = Moodboard(
+      title: _titleController.text,
+      description: _descriptionController.text,
+      tags: selectedTags,
+      imagePaths: selectedImages,
+      tracksInfo: tracksInfo,
+    );
+
+    savedMoodboards.add(newMoodboard);
 
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => MoodboardPage(
-          title: _titleController.text,
-          description: _descriptionController.text,
-          tags: selectedTags,
-          imagePaths: selectedImages,
-          tracksInfo: tracksInfo,
+          title: newMoodboard.title,
+          description: newMoodboard.description,
+          tags: newMoodboard.tags,
+          imagePaths: newMoodboard.imagePaths,
+          tracksInfo: newMoodboard.tracksInfo,
           onTrackTap: (path) {
             ScaffoldMessenger.of(
               context,
@@ -425,7 +377,6 @@ class ImageCard extends StatelessWidget {
             ),
           ),
 
-          // Check mark overlay if selected
           if (isSelected)
             Positioned(
               top: 8,

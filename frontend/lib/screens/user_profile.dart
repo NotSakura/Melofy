@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/moodboards/moodboard_template.dart';
 import 'package:provider/provider.dart';
 import '../theme_provider.dart';
+import '../data/global_moodboards.dart';
 import '../widgets/bottom_nav_bar.dart';
 
 class UserProfilePage extends StatefulWidget {
@@ -17,6 +19,53 @@ class _UserProfilePageState extends State<UserProfilePage> {
     setState(() {
       selectedTab = index;
     });
+  }
+
+  Widget _buildMoodboardsList(BuildContext context) {
+    if (savedMoodboards.isEmpty) {
+      return const Text('No moodboards saved yet.');
+    }
+
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: savedMoodboards.length,
+      separatorBuilder: (_, __) => const Divider(),
+      itemBuilder: (context, index) {
+        final moodboard = savedMoodboards[index];
+        return ListTile(
+          title: Text(moodboard.title),
+          subtitle: Text(moodboard.description),
+          leading: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.asset(
+              moodboard.imagePaths.isNotEmpty
+                  ? moodboard.imagePaths[0]
+                  : 'assets/images/placeholder.png',
+              width: 60,
+              height: 60,
+              fit: BoxFit.cover,
+            ),
+          ),
+
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => MoodboardPage(
+                  title: moodboard.title,
+                  description: moodboard.description,
+                  tags: moodboard.tags,
+                  imagePaths: moodboard.imagePaths,
+                  tracksInfo: moodboard.tracksInfo,
+                  onTrackTap: (path) {},
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -160,10 +209,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
             Padding(
               padding: const EdgeInsets.all(24.0),
               child: Center(
-                child: Text(
-                  selectedTab == 0 ? 'Moodboards content' : 'Posts content',
-                  style: theme.textTheme.bodyLarge,
-                ),
+                child: selectedTab == 0
+                    ? _buildMoodboardsList(context)
+                    : Text('Posts content', style: theme.textTheme.bodyLarge),
               ),
             ),
           ],
