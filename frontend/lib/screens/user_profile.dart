@@ -21,33 +21,35 @@ class _UserProfilePageState extends State<UserProfilePage> {
     });
   }
 
-  Widget _buildMoodboardsList(BuildContext context) {
+  Widget _buildMoodboardsGrid() {
+    final theme = Theme.of(context);
+    final double itemWidth = (MediaQuery.of(context).size.width / 2) - 20;
+
     if (savedMoodboards.isEmpty) {
-      return const Text('No moodboards saved yet.');
+      return const Padding(
+        padding: EdgeInsets.all(24),
+        child: Center(child: Text('No moodboards saved yet.')),
+      );
     }
 
-    return ListView.separated(
+    return GridView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+        childAspectRatio: 0.75,
+      ),
       itemCount: savedMoodboards.length,
-      separatorBuilder: (_, __) => const Divider(),
       itemBuilder: (context, index) {
         final moodboard = savedMoodboards[index];
-        return ListTile(
-          title: Text(moodboard.title),
-          subtitle: Text(moodboard.description),
-          leading: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
-              moodboard.imagePaths.isNotEmpty
-                  ? moodboard.imagePaths[0]
-                  : 'assets/images/placeholder.png',
-              width: 60,
-              height: 60,
-              fit: BoxFit.cover,
-            ),
-          ),
+        final imagePath = moodboard.imagePaths.isNotEmpty
+            ? moodboard.imagePaths[0]
+            : 'assets/images/placeholder.png';
 
+        return GestureDetector(
           onTap: () {
             Navigator.push(
               context,
@@ -63,6 +65,32 @@ class _UserProfilePageState extends State<UserProfilePage> {
               ),
             );
           },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.asset(
+                  imagePath,
+                  width: itemWidth,
+                  height: itemWidth,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: itemWidth,
+                child: Text(
+                  moodboard.title,
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
@@ -103,7 +131,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
               radius: 100,
               backgroundImage: AssetImage(
                 'assets/images/user_page/profile_pic.png',
-              ), // Replace with your asset
+              ),
             ),
             const SizedBox(height: 16),
             const Text(
@@ -169,13 +197,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   const SizedBox(height: 4),
                   Stack(
                     children: [
-                      // Full background line
                       Container(
                         width: double.infinity,
                         height: 3,
                         color: Colors.white.withOpacity(0.3),
                       ),
-                      // Purple overlay for the selected half
                       Row(
                         children: [
                           Expanded(
@@ -205,15 +231,20 @@ class _UserProfilePageState extends State<UserProfilePage> {
             ),
 
             const SizedBox(height: 24),
-            // Placeholder for content
+
             Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Center(
-                child: selectedTab == 0
-                    ? _buildMoodboardsList(context)
-                    : Text('Posts content', style: theme.textTheme.bodyLarge),
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 0),
+              child: selectedTab == 0
+                  ? _buildMoodboardsGrid()
+                  : Center(
+                      child: Text(
+                        'Posts content',
+                        style: theme.textTheme.bodyLarge,
+                      ),
+                    ),
             ),
+
+            const SizedBox(height: 40),
           ],
         ),
       ),
