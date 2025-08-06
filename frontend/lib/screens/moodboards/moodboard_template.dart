@@ -3,6 +3,8 @@ import 'package:frontend/screens/song_details_page.dart';
 import 'package:provider/provider.dart';
 import '../../theme_provider.dart';
 import '../../models/track_info.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class MoodboardPage extends StatelessWidget {
   final String title;
@@ -84,18 +86,43 @@ class MoodboardPage extends StatelessWidget {
                 final track = tracksInfo[index];
                 return InkWell(
                   borderRadius: BorderRadius.circular(12),
-                  onTap: () {
+                  onTap: () async {
                     onTrackTap(track.imagePath);
+
+                    String? previewUrl;
+                    String? trackViewUrl;
+
+                    try {
+                      final query = Uri.encodeComponent(
+                        "${track.name} ${track.artist}",
+                      );
+                      final url = Uri.parse(
+                        "https://itunes.apple.com/search?term=$query&entity=musicTrack&limit=1",
+                      );
+                      final response = await http.get(url);
+
+                      if (response.statusCode == 200) {
+                        final data = json.decode(response.body);
+                        if (data['results'].isNotEmpty) {
+                          final result = data['results'][0];
+                          previewUrl = result['previewUrl'];
+                          trackViewUrl = result['trackViewUrl'];
+                        }
+                      }
+                    } catch (e) {
+                      print("Error fetching track metadata: $e");
+                    }
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (_) => SongDetailsPage(
                           title: track.name,
                           artist: track.artist,
-                          image: track.imagePath, // Local or UI image
+                          image: track.imagePath,
                           cover: track.cover ?? track.imagePath,
-                          previewUrl: null, // or track.previewUrl if available
-                          trackViewUrl: track.appleMusicUrl, // ← Correct field
+                          previewUrl: previewUrl,
+                          trackViewUrl: trackViewUrl ?? track.appleMusicUrl,
                         ),
                       ),
                     );
