@@ -3,6 +3,7 @@ import 'package:frontend/screens/home.dart';
 import 'package:frontend/screens/explore.dart';
 import 'package:frontend/screens/create_moodboard_screen.dart';
 import 'package:frontend/screens/select_media_screen.dart';
+import 'package:frontend/screens/user_profile.dart';
 
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
@@ -30,7 +31,7 @@ class BottomNavBar extends StatelessWidget {
         );
         break;
       case 4:
-        destination = const Scaffold(body: Center(child: Text('Profile')));
+        destination = const UserProfilePage();
         break;
       default:
         destination = const HomeScreen();

@@ -9,7 +9,11 @@ class SelectMusicScreen extends StatefulWidget {
   final Uint8List selectedImage;
   final VoidCallback? onBack;
 
-  const SelectMusicScreen({super.key, required this.selectedImage, this.onBack});
+  const SelectMusicScreen({
+    super.key,
+    required this.selectedImage,
+    this.onBack,
+  });
 
   @override
   _SelectMusicScreenState createState() => _SelectMusicScreenState();
@@ -50,7 +54,9 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
     setState(() => isLoading = true);
 
     try {
-      final url = Uri.parse("https://itunes.apple.com/search?term=$query&entity=musicTrack&limit=10");
+      final url = Uri.parse(
+        "https://itunes.apple.com/search?term=$query&entity=musicTrack&limit=10",
+      );
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
@@ -75,7 +81,12 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
     }
   }
 
-  Future<void> _playPreview(String url, String trackId, String trackName, String artist) async {
+  Future<void> _playPreview(
+    String url,
+    String trackId,
+    String trackName,
+    String artist,
+  ) async {
     try {
       if (_currentlyPlayingTrack == trackId) {
         await _audioPlayer.stop();
@@ -123,7 +134,10 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
       backgroundColor: isDark ? Colors.black : Colors.white,
       appBar: AppBar(
         backgroundColor: isDark ? Colors.black : Colors.white,
-        title: const Text('New Post', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'New Post',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -166,7 +180,6 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
               alignment: Alignment.center,
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
                   child: Image.memory(
                     widget.selectedImage,
                     height: 180,
@@ -174,22 +187,30 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                if (_selectedPreviewUrl != null) // Show overlay ONLY if track selected
+                if (_selectedPreviewUrl !=
+                    null) // Show overlay ONLY if track selected
                   Container(
                     height: 180,
                     decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.play_circle_fill, color: Colors.white, size: 50),
+                          Icon(
+                            Icons.play_circle_fill,
+                            color: Colors.white,
+                            size: 50,
+                          ),
                           SizedBox(height: 6),
                           Text(
                             "Preview",
-                            style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
@@ -201,8 +222,10 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
 
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-            child: Text("Choose a music track",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            child: Text(
+              "Choose a music track",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
           ),
 
           /// ✅ Search Bar
@@ -293,13 +316,25 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
                         child: ListTile(
                           leading: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
-                            child: Image.network(track['artworkUrl100'],
-                                height: 50, width: 50, fit: BoxFit.cover),
+                            child: Image.network(
+                              track['artworkUrl100'],
+                              height: 50,
+                              width: 50,
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                          title: Text(track['trackName'] ?? '',
-                              style: TextStyle(color: isDark ? Colors.white : Colors.black)),
-                          subtitle: Text(track['artistName'] ?? '',
-                              style: TextStyle(color: isDark ? Colors.white70 : Colors.black54)),
+                          title: Text(
+                            track['trackName'] ?? '',
+                            style: TextStyle(
+                              color: isDark ? Colors.white : Colors.black,
+                            ),
+                          ),
+                          subtitle: Text(
+                            track['artistName'] ?? '',
+                            style: TextStyle(
+                              color: isDark ? Colors.white70 : Colors.black54,
+                            ),
+                          ),
                           trailing: Icon(
                             _currentlyPlayingTrack == trackId
                                 ? Icons.pause_circle_filled
@@ -317,9 +352,11 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
-              onPressed: (_selectedPreviewUrl == null) ? null : () {
-                // Navigate to SavePost or further logic
-              },
+              onPressed: (_selectedPreviewUrl == null)
+                  ? null
+                  : () {
+                      // Navigate to SavePost or further logic
+                    },
               style: ElevatedButton.styleFrom(
                 backgroundColor: (_selectedPreviewUrl == null)
                     ? Colors.grey
@@ -341,4 +378,3 @@ class _SelectMusicScreenState extends State<SelectMusicScreen> {
     );
   }
 }
-
