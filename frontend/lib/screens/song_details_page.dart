@@ -110,20 +110,13 @@ class _SongDetailsPageState extends State<SongDetailsPage> {
                 ),
               );
             },
-            // child: Padding(
-            // padding: const EdgeInsets.all(20.0), // Adjust as needed
+
             child: Stack(
               alignment: Alignment.center,
               children: [
                 // Background image with rounded bottom corners
                 Container(
                   decoration: BoxDecoration(
-                    // borderRadius: const BorderRadius.only(
-                    //   topLeft: Radius.circular(20),
-                    //   topRight: Radius.circular(20),
-                    //   bottomLeft: Radius.circular(20),
-                    //   bottomRight: Radius.circular(20),
-                    // ),
                     boxShadow: const [
                       BoxShadow(
                         color: Colors.black26,
@@ -154,10 +147,10 @@ class _SongDetailsPageState extends State<SongDetailsPage> {
                   decoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.2),
                     borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
+                      topLeft: Radius.circular(0),
+                      topRight: Radius.circular(0),
+                      bottomLeft: Radius.circular(0),
+                      bottomRight: Radius.circular(0),
                     ),
                   ),
                   child: const Center(
@@ -170,7 +163,6 @@ class _SongDetailsPageState extends State<SongDetailsPage> {
                 ),
               ],
             ),
-            // ),
           ),
           const SizedBox(height: 24),
 
