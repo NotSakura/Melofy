@@ -43,7 +43,9 @@ class _SongDetailsPageState extends State<SongDetailsPage> {
     if (widget.title.isEmpty || widget.artist.isEmpty) return;
 
     final query = Uri.encodeComponent("${widget.title} ${widget.artist}");
-    final url = Uri.parse("https://itunes.apple.com/search?term=$query&entity=musicTrack&limit=1");
+    final url = Uri.parse(
+      "https://itunes.apple.com/search?term=$query&entity=musicTrack&limit=1",
+    );
 
     try {
       final response = await http.get(url);
@@ -84,7 +86,9 @@ class _SongDetailsPageState extends State<SongDetailsPage> {
         backgroundColor: theme.scaffoldBackgroundColor,
         title: Text(
           'Song Details',
-          style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: Column(
@@ -106,34 +110,67 @@ class _SongDetailsPageState extends State<SongDetailsPage> {
                 ),
               );
             },
+            // child: Padding(
+            // padding: const EdgeInsets.all(20.0), // Adjust as needed
             child: Stack(
               alignment: Alignment.center,
               children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
+                // Background image with rounded bottom corners
+                Container(
+                  decoration: BoxDecoration(
+                    // borderRadius: const BorderRadius.only(
+                    //   topLeft: Radius.circular(20),
+                    //   topRight: Radius.circular(20),
+                    //   bottomLeft: Radius.circular(20),
+                    //   bottomRight: Radius.circular(20),
+                    // ),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 8,
+                        offset: Offset(2, 2),
+                      ),
+                    ],
                   ),
+                  clipBehavior: Clip.hardEdge,
                   child: widget.image.startsWith('http')
-                      ? Image.network(widget.image, height: 400, width: double.infinity, fit: BoxFit.cover)
-                      : Image.asset(widget.image, height: 400, width: double.infinity, fit: BoxFit.cover),
+                      ? Image.network(
+                          widget.image,
+                          height: 400,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset(
+                          widget.image,
+                          height: 400,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
                 ),
-                /// Play Icon Overlay
+
+                // Semi-transparent overlay with play icon
                 Container(
                   height: 400,
                   decoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.2),
                     borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
                       bottomLeft: Radius.circular(20),
                       bottomRight: Radius.circular(20),
                     ),
                   ),
                   child: const Center(
-                    child: Icon(Icons.play_circle_fill, color: Colors.white, size: 80),
+                    child: Icon(
+                      Icons.play_circle_fill,
+                      color: Colors.white,
+                      size: 80,
+                    ),
                   ),
                 ),
               ],
             ),
+            // ),
           ),
           const SizedBox(height: 24),
 
@@ -167,7 +204,9 @@ class _SongDetailsPageState extends State<SongDetailsPage> {
                 isLoadingGenre
                     ? Text(
                         "Loading genre...",
-                        style: TextStyle(color: isDark ? Colors.white70 : Colors.grey),
+                        style: TextStyle(
+                          color: isDark ? Colors.white70 : Colors.grey,
+                        ),
                       )
                     : Text(
                         "Genre: ${genre ?? "Unknown"}",
@@ -190,7 +229,10 @@ class _SongDetailsPageState extends State<SongDetailsPage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 14,
+                      horizontal: 18,
+                    ),
                   ),
                   child: const Text(
                     "Add to Moodboard",
@@ -206,8 +248,18 @@ class _SongDetailsPageState extends State<SongDetailsPage> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(6),
                         child: widget.cover.startsWith('http')
-                            ? Image.network(widget.cover, width: 50, height: 50, fit: BoxFit.cover)
-                            : Image.asset(widget.cover, width: 50, height: 50, fit: BoxFit.cover),
+                            ? Image.network(
+                                widget.cover,
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.asset(
+                                widget.cover,
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
@@ -221,7 +273,10 @@ class _SongDetailsPageState extends State<SongDetailsPage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 12,
+                              horizontal: 20,
+                            ),
                           ),
                         ),
                       ),
@@ -244,6 +299,3 @@ class _SongDetailsPageState extends State<SongDetailsPage> {
     );
   }
 }
-
-
-

@@ -142,91 +142,163 @@ class _ExplorePageState extends State<ExplorePage> {
       imagePath: 'assets/images/explore_page/tracks/song3.jpg',
       name: 'Umbrella',
       artist: 'Rihanna',
+      cover:
+          'https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/2b/c0/81/2bc081c8-25f0-ba43-d451-587a54613778/16UMGIM59202.rgb.jpg/592x592bb.webp',
+      appleMusicUrl:
+          'https://music.apple.com/us/album/umbrella-feat-jay-z/1441154435?i=1441154437',
     ),
     'assets/images/explore_page/tracks/song4.jpg': TrackInfo(
       imagePath: 'assets/images/explore_page/tracks/song4.jpg',
       name: 'Clocks',
       artist: 'Coldplay',
+      cover:
+          'https://is1-ssl.mzstatic.com/image/thumb/Video112/v4/40/66/14/406614b7-4680-ad21-41d3-dca2e58bf359/Jobb1a3f2f6-88a7-46ae-8533-055f698aa7f0-135335131-PreviewImage_preview_image_nonvideo_sdr-Time1660754380172.png/592x592bb.webp',
+      appleMusicUrl:
+          'https://music.apple.com/us/album/clocks/1122775993?i=1122776156',
     ),
     'assets/images/explore_page/tracks/song5.jpg': TrackInfo(
       imagePath: 'assets/images/explore_page/tracks/song5.jpg',
       name: 'Hips Don’t Lie',
       artist: 'Shakira',
+      cover:
+          'https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/7c/a3/29/7ca329b9-5861-7671-994c-25aa22f42654/Job4da8d974-7cd7-4dd3-8375-9ed49c5ae785-193557288-PreviewImage_Preview_Image_Intermediate_nonvideo_sdr_379171340_2181902493-Time1748454044506.png/592x592bb.webp',
+      appleMusicUrl:
+          'https://music.apple.com/us/album/hips-dont-lie-feat-wyclef-jean/1817217057?i=1817217063',
     ),
     'assets/images/explore_page/tracks/song6.jpg': TrackInfo(
       imagePath: 'assets/images/explore_page/tracks/song6.jpg',
       name: 'Happy',
       artist: 'Pharrell Williams',
+      cover:
+          'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/f4/43/16/f4431607-15c4-883c-3fbe-dd6abbbe03e7/886444516877.jpg/592x592bf.webp',
+      appleMusicUrl:
+          'https://music.apple.com/us/album/happy-from-despicable-me-2/863835302?i=863835363',
     ),
     'assets/images/explore_page/tracks/song7.jpg': TrackInfo(
       imagePath: 'assets/images/explore_page/tracks/song7.jpg',
       name: 'Bad Romance',
       artist: 'Lady Gaga',
+      cover:
+          'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/1b/98/88/1b9888da-6a1f-bff0-ec03-518f445019f6/19UMGIM73435.rgb.jpg/592x592bb.webp',
+      appleMusicUrl:
+          'https://music.apple.com/us/album/bad-romance/1476727669?i=1476727670',
     ),
     'assets/images/explore_page/tracks/song8.jpg': TrackInfo(
       imagePath: 'assets/images/explore_page/tracks/song8.jpg',
       name: 'Get Lucky',
       artist: 'Daft Punk',
+      cover:
+          'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e8/43/5f/e8435ffa-b6b9-b171-40ab-4ff3959ab661/886443919266.jpg/592x592bb.webp',
+      appleMusicUrl:
+          'https://music.apple.com/us/album/get-lucky/617154241?i=617154366',
     ),
     'assets/images/explore_page/tracks/song9.jpg': TrackInfo(
       imagePath: 'assets/images/explore_page/tracks/song9.jpg',
       name: 'Shape of You',
       artist: 'Ed Sheeran',
+      cover:
+          'https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/88/70/e9/8870e976-1d4e-0ed6-d5a1-02cc6183558c/Job3b60a129-8c0d-4179-b6ec-903b71bf1b18-129193526-PreviewImage_preview_image_nonvideo_sdr-Time1645812297481.png/592x592bb.webp',
+      appleMusicUrl:
+          'https://music.apple.com/us/album/shape-of-you/1193701079?i=1193701392',
     ),
     'assets/images/explore_page/tracks/song10.jpg': TrackInfo(
       imagePath: 'assets/images/explore_page/tracks/song10.jpg',
       name: 'Firework',
       artist: 'Katy Perry',
+      cover:
+          'https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/f5/44/ce/f544ceea-962c-5d7e-18c2-335cf1fa3e2f/Job01cd1e4d-a5ad-406d-9f56-e6c71bf23786-151190437-PreviewImage_preview_image_nonvideo_sdr-Time1686241868837.png/592x592bb.webp',
+      appleMusicUrl:
+          'https://music.apple.com/us/album/firework/716192216?i=716192625',
     ),
     'assets/images/explore_page/tracks/song11.jpg': TrackInfo(
       imagePath: 'assets/images/explore_page/tracks/song11.jpg',
       name: 'Lose Yourself',
       artist: 'Eminem',
+      cover:
+          'https://is1-ssl.mzstatic.com/image/thumb/Video122/v4/2c/1f/89/2c1f8925-f31a-7cdc-c903-4148cf58bb56/Jobd7444671-991d-4af0-ab9a-33c409ffc3a5-138354641-PreviewImage_preview_image_nonvideo_sdr-Time1667248714277.png/592x592bf.webp',
+      appleMusicUrl:
+          'https://music.apple.com/us/album/lose-yourself/1440903339?i=1440903439',
     ),
     'assets/images/explore_page/tracks/song12.png': TrackInfo(
       imagePath: 'assets/images/explore_page/tracks/song12.png',
       name: 'Uptown Funk',
       artist: 'Mark Ronson ft. Bruno Mars',
+      cover:
+          'https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/55/59/ac/5559ac86-dd27-5583-2d71-d0b1f0437257/Jobbb48e967-a754-4b80-9f95-f07690529893-192300999-PreviewImage_Preview_Image_Intermediate_nonvideo_sdr_376600889_2156884749-Time1747060006000.png/592x592bb.webp',
+      appleMusicUrl:
+          'https://music.apple.com/us/album/uptown-funk-feat-bruno-mars/943946661?i=943946671',
     ),
     'assets/images/explore_page/tracks/song13.jpg': TrackInfo(
       imagePath: 'assets/images/explore_page/tracks/song13.jpg',
       name: 'Rolling in the Deep',
       artist: 'Adele',
+      cover:
+          'https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/d8/e3/f9/d8e3f9ea-d6fe-9a1b-9f13-109983d3062e/191404113868.png/592x592bb.webp',
+      appleMusicUrl:
+          'https://music.apple.com/us/album/rolling-in-the-deep/1544491232?i=1544491233',
     ),
     'assets/images/explore_page/tracks/song14.png': TrackInfo(
       imagePath: 'assets/images/explore_page/tracks/song14.png',
       name: 'Can’t Stop the Feeling!',
       artist: 'Justin Timberlake',
+      cover:
+          'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/68/19/43/68194388-efa7-3afe-8a15-a4c3eebef1f6/886445915211.jpg/592x592bb.webp',
+      appleMusicUrl:
+          'https://music.apple.com/us/album/cant-stop-the-feeling/1154238159?i=1154239184',
     ),
     'assets/images/explore_page/tracks/song15.jpg': TrackInfo(
       imagePath: 'assets/images/explore_page/tracks/song15.jpg',
       name: 'Royals',
       artist: 'Lorde',
+      cover:
+          'https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/e1/d3/23/e1d323d6-a7e4-6d5e-e6f6-5105c76db133/13UAAIM68691.rgb.jpg/592x592bb.webp',
+      appleMusicUrl:
+          'https://music.apple.com/us/album/royals/1440818584?i=1440818664',
     ),
     'assets/images/explore_page/tracks/song16.jpg': TrackInfo(
       imagePath: 'assets/images/explore_page/tracks/song16.jpg',
       name: 'Seven Nation Army',
       artist: 'The White Stripes',
+      cover:
+          'https://is1-ssl.mzstatic.com/image/thumb/Video115/v4/cb/f3/c3/cbf3c3fd-449c-65df-7420-b6a98dc0922b/Jobedefc1a2-377d-4977-a674-e287ac379593-116421761-PreviewImage_preview_image_nonvideo_sdr-Time1625154212215.png/592x592bb.webp',
+      appleMusicUrl:
+          'https://music.apple.com/us/album/seven-nation-army/1533513536?i=1533513537',
     ),
     'assets/images/explore_page/tracks/song17.jpg': TrackInfo(
       imagePath: 'assets/images/explore_page/tracks/song17.jpg',
       name: 'Someone Like You',
       artist: 'Adele',
+      cover:
+          'https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/d8/e3/f9/d8e3f9ea-d6fe-9a1b-9f13-109983d3062e/191404113868.png/592x592bb.webp',
+      appleMusicUrl:
+          'https://music.apple.com/us/album/someone-like-you/1544491232?i=1544491998',
     ),
     'assets/images/explore_page/tracks/song18.jpg': TrackInfo(
       imagePath: 'assets/images/explore_page/tracks/song18.jpg',
       name: 'Toxic',
       artist: 'Britney Spears',
+      cover:
+          'https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/79/00/0f/79000f79-2bb4-bea7-faf7-b57710178576/Job0a404bee-ba17-410f-80f3-5b8bdf31a675-191561883-PreviewImage_Preview_Image_Intermediate_nonvideo_sdr_375099000_2142813707-Time1746125394652.png/592x592bb.webp',
+      appleMusicUrl:
+          'https://music.apple.com/us/album/toxic/251947909?i=251948354',
     ),
     'assets/images/explore_page/tracks/song19.jpg': TrackInfo(
       imagePath: 'assets/images/explore_page/tracks/song19.jpg',
       name: 'Boulevard of Broken Dreams',
       artist: 'Green Day',
+      cover:
+          'https://is1-ssl.mzstatic.com/image/thumb/Video122/v4/d0/4c/53/d04c532e-ca0a-0ace-0847-62003931424b/Job75e8880b-4409-4b22-872b-4a2ab7bd1669-138891124-PreviewImage_preview_image_nonvideo_sdr-Time1668123397619.png/592x592bb.webp',
+      appleMusicUrl:
+          'https://music.apple.com/us/album/boulevard-of-broken-dreams/1161539183?i=1161539476',
     ),
     'assets/images/explore_page/tracks/song20.jpg': TrackInfo(
       imagePath: 'assets/images/explore_page/tracks/song20.jpg',
       name: 'Chandelier',
       artist: 'Sia',
+      cover:
+          'https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/f9/00/58/f9005871-6e48-9d40-7e41-1b256faab4a9/Job0a2bdfb8-c31a-4d0b-b331-fcc5229a75cb-171214554-PreviewImage_Preview_Image_Intermediate_nonvideo_sdr_333397019_1823968674-Time1720030574648.png/592x592bb.webp',
+      appleMusicUrl:
+          'https://music.apple.com/us/album/chandelier/882945378?i=882945383',
     ),
   };
 
@@ -411,7 +483,7 @@ class _ExplorePageState extends State<ExplorePage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                          height: 170,
+                          height: 190,
                           decoration: BoxDecoration(
                             image: DecorationImage(
                               image: AssetImage(imagePath),

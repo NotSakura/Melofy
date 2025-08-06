@@ -99,9 +99,10 @@ class _FullScreenMediaState extends State<FullScreenMedia> {
               onDoubleTap: () => _exitFullscreen(context),
               child: widget.imageBytes != null
                   ? Image.memory(widget.imageBytes!, fit: BoxFit.cover)
-                  : (widget.imagePath != null && widget.imagePath!.startsWith('http'))
-                      ? Image.network(widget.imagePath!, fit: BoxFit.cover)
-                      : Image.asset(widget.imagePath ?? '', fit: BoxFit.cover),
+                  : (widget.imagePath != null &&
+                        widget.imagePath!.startsWith('http'))
+                  ? Image.network(widget.imagePath!, fit: BoxFit.cover)
+                  : Image.asset(widget.imagePath ?? '', fit: BoxFit.cover),
             ),
           ),
 
@@ -138,9 +139,10 @@ class _FullScreenMediaState extends State<FullScreenMedia> {
                       ),
                     ),
                   Slider(
-                    value: _currentPosition.inSeconds
-                        .toDouble()
-                        .clamp(0, _totalDuration.inSeconds.toDouble()),
+                    value: _currentPosition.inSeconds.toDouble().clamp(
+                      0,
+                      _totalDuration.inSeconds.toDouble(),
+                    ),
                     min: 0,
                     max: _totalDuration.inSeconds.toDouble(),
                     activeColor: Colors.white,
@@ -155,11 +157,17 @@ class _FullScreenMediaState extends State<FullScreenMedia> {
                     children: [
                       Text(
                         _formatDuration(_currentPosition),
-                        style: const TextStyle(color: Colors.white, fontSize: 13),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                        ),
                       ),
                       Text(
                         _formatDuration(_totalDuration),
-                        style: const TextStyle(color: Colors.white, fontSize: 13),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                        ),
                       ),
                     ],
                   ),
