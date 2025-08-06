@@ -41,8 +41,7 @@ dependencies:
   crop_your_image: ^0.7.5
   photo_manager: ^3.0.0
   permission_handler: ^11.0.1
-  cached_network_image: ^3.3.1
-  http: ^1.2.0             # For API requests
+  cached_network_image: ^3.3.1           # For API requests
   firebase_auth: ^4.4.0    # For user authentication
   firebase_core: ^2.10.0   # For Firebase initialization
 
