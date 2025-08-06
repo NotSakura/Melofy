@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/moodboard.dart';
 import 'package:frontend/models/track_info.dart'; // Use shared TrackInfo here
+import 'package:frontend/theme_provider.dart';
+import 'package:provider/provider.dart';
 import '../data/global_moodboards.dart';
 import './moodboards/moodboard_template.dart';
 
@@ -159,7 +161,26 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
     final aspectRatio = cardWidth / cardHeight;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Create New Moodboard")),
+      appBar: AppBar(
+        title: Text(
+          "Create New Moodboard",
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              isDark ? Icons.wb_sunny : Icons.nights_stay,
+              color: theme.iconTheme.color,
+            ),
+            onPressed: () {
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+            },
+          ),
+        ],
+      ),
+
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),

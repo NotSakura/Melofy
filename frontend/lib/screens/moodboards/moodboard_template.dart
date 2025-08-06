@@ -4,6 +4,7 @@ import 'package:frontend/widgets/bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 import '../../theme_provider.dart';
 import '../../models/track_info.dart';
+import '../../theme_provider.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -28,6 +29,7 @@ class MoodboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final double itemWidth = MediaQuery.of(context).size.width / 2 - 20;
 
     return Scaffold(
@@ -41,7 +43,10 @@ class MoodboardPage extends StatelessWidget {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.wb_sunny),
+            icon: Icon(
+              isDark ? Icons.wb_sunny : Icons.nights_stay,
+              color: theme.iconTheme.color,
+            ),
             onPressed: () {
               Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
             },
