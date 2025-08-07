@@ -482,36 +482,38 @@ class _ExplorePageState extends State<ExplorePage> {
                       builder: (context, constraints) {
                         double size = constraints.maxWidth;
 
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: size,
-                              height: size, // square
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(imagePath),
-                                  fit: BoxFit.cover,
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.black26,
-                                    blurRadius: 4,
-                                    offset: Offset(2, 2),
+                        return SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: size,
+                                height: size,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(imagePath),
+                                    fit: BoxFit.cover,
                                   ),
-                                ],
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 4,
+                                      offset: Offset(2, 2),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              collectionTitles[imagePath] ?? '',
-                              textAlign: TextAlign.center,
-                              style: theme.textTheme.bodyLarge?.copyWith(
-                                fontWeight: FontWeight.w600,
+                              const SizedBox(height: 8),
+                              Text(
+                                collectionTitles[imagePath] ?? '',
+                                textAlign: TextAlign.center,
+                                style: theme.textTheme.bodyLarge?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         );
                       },
                     ),

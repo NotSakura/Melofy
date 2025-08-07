@@ -8,28 +8,28 @@ class NotificationsPage extends StatelessWidget {
 
   final List<_NotificationItem> notifications = const [
     _NotificationItem(
-      avatarPath: 'assets/images/notifications_page/notification1.jpg',
-      content: 'Sophia started following you',
+      avatarPath: 'assets/images/notifications_page/notification1.png',
+      content: 'Kurby started following you',
       timeAgo: '2h',
     ),
     _NotificationItem(
-      avatarPath: 'assets/images/user_page/profile_pic.png',
-      content: 'You have a new like on your moodboard',
+      avatarPath: 'assets/images/notifications_page/notification3.jpg',
+      content: 'Rocky liked your moodboard',
       timeAgo: '4h',
     ),
     _NotificationItem(
       avatarPath: 'assets/images/notifications_page/notification2.jpg',
-      content: 'John commented: "Love this vibe!"',
+      content: 'Sakura tagged you in "Coldplay 2025"',
       timeAgo: '6h',
     ),
     _NotificationItem(
       avatarPath: 'assets/images/notifications_page/notification4.jpg',
-      content: 'Anna mentioned you in a post',
+      content: 'Cura mentioned you in a post',
       timeAgo: '1d',
     ),
     _NotificationItem(
       avatarPath: 'assets/images/notifications_page/notification5.jpg',
-      content: 'Elenor started following you',
+      content: 'Amy started following you',
       timeAgo: '2d',
     ),
   ];
