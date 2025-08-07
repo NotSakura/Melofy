@@ -482,7 +482,7 @@ class _ExplorePageState extends State<ExplorePage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                          height: 190,
+                          height: 170,
                           decoration: BoxDecoration(
                             image: DecorationImage(
                               image: AssetImage(imagePath),
