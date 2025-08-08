@@ -404,11 +404,11 @@ class ImageCard extends StatelessWidget {
               right: 8,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.deepPurple.shade400,
+                  color: const Color(0xFF8644AF),
                   shape: BoxShape.circle,
                 ),
                 padding: const EdgeInsets.all(4),
-                child: const Icon(Icons.check, size: 24, color: Colors.white),
+                child: const Icon(Icons.check, size: 30, color: Colors.white),
               ),
             ),
         ],

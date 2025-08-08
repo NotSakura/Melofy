@@ -4,7 +4,6 @@ import 'package:frontend/widgets/bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 import '../../theme_provider.dart';
 import '../../models/track_info.dart';
-import '../../theme_provider.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -194,7 +193,7 @@ class MoodboardPage extends StatelessWidget {
           const SliverPadding(padding: EdgeInsets.only(bottom: 24)),
         ],
       ),
-      bottomNavigationBar: const BottomNavBar(currentIndex: 0),
+      bottomNavigationBar: const BottomNavBar(currentIndex: 1),
     );
   }
 }

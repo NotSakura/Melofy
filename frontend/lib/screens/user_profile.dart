@@ -130,18 +130,18 @@ class _UserProfilePageState extends State<UserProfilePage> {
             const CircleAvatar(
               radius: 100,
               backgroundImage: AssetImage(
-                'assets/images/user_page/profile_pic.png',
+                'assets/images/user_page/profile_pic.jpg',
               ),
             ),
             const SizedBox(height: 16),
             const Text(
-              '@sophia_loves_music',
+              '@emma_ho',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 3),
-            const Text('Music Fan | LA'),
+            const Text('Music Fan | Toronto'),
             const SizedBox(height: 3),
-            const Text('45 followers  •  231 following'),
+            const Text('45 followers  •  132 following'),
             const SizedBox(height: 20),
 
             // Purple Chip-style buttons

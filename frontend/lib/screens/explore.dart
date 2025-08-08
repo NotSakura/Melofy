@@ -478,35 +478,44 @@ class _ExplorePageState extends State<ExplorePage> {
                         ),
                       );
                     },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: 170,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(imagePath),
-                              fit: BoxFit.cover,
-                            ),
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 4,
-                                offset: Offset(2, 2),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        double size = constraints.maxWidth;
+
+                        return SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: size,
+                                height: size,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(imagePath),
+                                    fit: BoxFit.cover,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 4,
+                                      offset: Offset(2, 2),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                collectionTitles[imagePath] ?? '',
+                                textAlign: TextAlign.center,
+                                style: theme.textTheme.bodyLarge?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          collectionTitles[imagePath] ?? '',
-                          textAlign: TextAlign.center,
-                          style: theme.textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
                   );
                 },
