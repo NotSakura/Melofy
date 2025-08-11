@@ -23,24 +23,22 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
   Widget _buildMoodboardsGrid() {
     final theme = Theme.of(context);
-    final double itemWidth = (MediaQuery.of(context).size.width / 2) - 20;
 
     if (savedMoodboards.isEmpty) {
       return const Padding(
-        padding: EdgeInsets.all(24),
+        padding: EdgeInsets.all(16),
         child: Center(child: Text('No moodboards saved yet')),
       );
     }
 
     return GridView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: EdgeInsets.zero,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2, // Two per row
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-        childAspectRatio: 0.75, // Cell taller than wide so title fits
+        crossAxisCount: 2, // two per row
+        mainAxisSpacing: 16,
+        crossAxisSpacing: 16,
+        childAspectRatio: 0.85,
       ),
-
       itemCount: savedMoodboards.length,
       itemBuilder: (context, index) {
         final moodboard = savedMoodboards[index];
@@ -48,7 +46,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
             ? moodboard.imagePaths[0]
             : 'assets/images/placeholder.png';
 
-        return GestureDetector(
+        return InkWell(
+          borderRadius: BorderRadius.circular(12),
           onTap: () {
             Navigator.push(
               context,
@@ -64,27 +63,44 @@ class _UserProfilePageState extends State<UserProfilePage> {
               ),
             );
           },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AspectRatio(
-                aspectRatio: 1, // Makes image perfectly square
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.asset(imagePath, fit: BoxFit.cover),
-                ),
-              ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              double size = constraints.maxWidth;
 
-              const SizedBox(height: 8),
-              Text(
-                moodboard.title,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: size,
+                    height: size,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(imagePath),
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 4,
+                          offset: Offset(2, 2),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    moodboard.title,
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              );
+            },
           ),
         );
       },
@@ -140,7 +156,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
           // Purple Chip-style buttons
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Wrap(
               spacing: 8,
               alignment: WrapAlignment.center,
@@ -163,7 +179,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
           // Moodboards / Posts Selector
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
                 Row(
@@ -229,7 +245,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
           // Moodboards / Posts Content
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(16),
               child: selectedTab == 0
                   ? _buildMoodboardsGrid()
                   : const Center(child: Text('No posts saved yet')),
