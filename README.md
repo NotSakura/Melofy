@@ -40,3 +40,29 @@ Melofy is a social platform where users create, save, and explore music-inspired
     ```bash
     flutter run
     ```
+
+---
+
+## Video Demo
+## Demo Videos
+
+### Home Page
+<video width="400" controls>
+  <source src="videos/home-page.mov">
+</video>
+
+### Explore Page
+<video width="400" controls>
+  <source src="videos/explore-page.mov">
+</video>
+
+### Creating a Post
+<video width="400" controls>
+  <source src="videos/creating-post.mov">
+</video>
+
+### Create Moodboard
+<video width="400" controls>
+  <source src="videos/create-moodboard.mov">
+  Your browser does not support the video tag.
+</video>
