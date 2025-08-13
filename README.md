@@ -44,25 +44,6 @@ Melofy is a social platform where users create, save, and explore music-inspired
 ---
 
 ## Video Demo
-## Demo Videos
 
-### Home Page
-<video width="400" controls>
-  <source src="videos/home-page.mov">
-</video>
-
-### Explore Page
-<video width="400" controls>
-  <source src="videos/explore-page.mov">
-</video>
-
-### Creating a Post
-<video width="400" controls>
-  <source src="videos/creating-post.mov">
-</video>
-
-### Create Moodboard
-<video width="400" controls>
-  <source src="videos/create-moodboard.mov">
-  Your browser does not support the video tag.
-</video>
+Please see a video of our demo here! https://drive.google.com/file/d/1dC92nqPM2BjWAphAa6QG_Z1vXc5LHSiQ/view?usp=sharing 
+We’ve also added videos (split due to size constraints) in this repository available for download.
