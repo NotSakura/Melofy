@@ -7,7 +7,9 @@ const { db } = require('../../firebase/admin');
 router.post('/', /* auth, */ async (req, res) => {
     try {
         const { 
-            spotifyTrackId,  // This will come from frontend after user selects a song
+            previewUrl,      // iTunes preview song URL
+            trackName,       // iTunes track name
+            artistName,      // iTunes artist name
             imageUrl,        // URL of the uploaded image
             caption,
             tags,
@@ -21,7 +23,9 @@ router.post('/', /* auth, */ async (req, res) => {
         // Create the post document
         const newPost = {
             creatorId: userId,
-            TrackId: spotifyTrackId,
+            previewUrl,
+            trackName,
+            artistName,
             imageUrl,
             caption,
             tags,
