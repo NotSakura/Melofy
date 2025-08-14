@@ -26,10 +26,33 @@ Melofy is a social platform where users create, save, and explore music-inspired
 
 ## Installation
 
+### Backend Setup
 
 1. Clone the repository:  
     ```bash
     git clone https://github.com/NotSakura/Melofy.git
+    cd Melofy/backend
+    ```
+2. Install dependencies:  
+    ```bash
+    npm install
+    ```
+3. Run the backend server:
+   ```bash
+   npm start
+   ```
+   The backend will be accessible at `http://localhost:3000`
+
+Alternatively, you can use Docker:
+```bash
+docker build -t melofy-backend .
+docker run -p 3000:3000 melofy-backend
+```
+
+### Frontend Setup
+
+1. Navigate to the frontend directory:  
+    ```bash
     cd Melofy/frontend
     ```
 2. Install Flutter dependencies:  
