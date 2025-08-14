@@ -43,7 +43,12 @@ class MoodboardPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () {
-              // share functionality here
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Sharing feature coming soon!"),
+                  duration: Duration(seconds: 2),
+                ),
+              );
             },
           ),
           IconButton(

@@ -163,12 +163,24 @@ class _CreateMoodboardPageState extends State<CreateMoodboardPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Create New Moodboard",
+          "Create Moodboard",
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.person_add_alt_1), // Tag people icon
+            color: theme.iconTheme.color,
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Tagging feature coming soon!"),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            },
+          ),
           IconButton(
             icon: Icon(
               isDark ? Icons.wb_sunny : Icons.nights_stay,
