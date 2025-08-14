@@ -18,3 +18,16 @@ app.listen(PORT, () => {
 
 const updateProfile = require('./routes/users/updateProfile');
 app.use('/api/users', updateProfile);
+
+// Posts routes
+const postsFeed = require('./routes/posts/feed');
+const createPost = require('./routes/posts/createPost');
+const uploadImage = require('./routes/posts/uploadImage');
+
+app.use('/api/posts/feed', postsFeed);
+app.use('/api/posts/create', createPost);
+app.use('/api/posts/upload-image', uploadImage);
+
+// Moodboards routes
+const moodboardsRouter = require('./routes/moodboards/moodboards');
+app.use('/api/moodboards', moodboardsRouter);
