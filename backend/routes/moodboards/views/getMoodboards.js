@@ -3,7 +3,9 @@
 // Returns: Array of moodboard objects
 
 
-// This is a backup for feed getMoodboardsFeed.js
+// This is a backup for feed getMoodboardsFeed.js  
+// 
+/////NOT USED
 
 const express = require('express');
 const router = express.Router();
