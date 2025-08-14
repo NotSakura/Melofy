@@ -1,6 +1,10 @@
 // Route: GET /api/moodboards
-// Purpose: Retrieve all moodboards, optionally filtered by creatorId or isPublic
+// Purpose: Retrieve all moodboards, optionally filtered by creatorId or isPublic. 
 // Returns: Array of moodboard objects
+
+
+// This is a backup for feed getMoodboardsFeed.js
+
 const express = require('express');
 const router = express.Router();
 const { db } = require('../../../firebase/firebase');

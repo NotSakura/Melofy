@@ -1,19 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const { db } = require('../../firebase/firebase');
-const verifyToken = require('../auth/verifyToken');
+// const verifyToken = require('../auth/verifyToken');  // Will be used later for auth
 
 // GET /api/posts/feed - Get posts based on user's liked genres
-router.get('/', verifyToken, async (req, res) => {
+router.get('/', /* verifyToken, */ async (req, res) => {
     try {
-        // Get the current user's liked genres
-        const userDoc = await db.collection('users').doc(req.user.uid).get();
-        if (!userDoc.exists) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-
-        const userData = userDoc.data();
-        const userLikedGenres = userData.likedGenres || [];
+        // TODO: Will be used later for personalization
+        // const userDoc = await db.collection('users').doc(req.user.uid).get();
+        // if (!userDoc.exists) {
+        //     return res.status(404).json({ error: 'User not found' });
+        // }
+        // const userData = userDoc.data();
+        // const userLikedGenres = userData.likedGenres || [];
+        
+        // For prototype: use some default genres
+        const userLikedGenres = ['pop', 'rock', 'indie'];
 
         if (userLikedGenres.length === 0) {
             return res.status(200).json({ 

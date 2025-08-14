@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { auth } = require('../../firebase/admin');
+// const { auth } = require('../../firebase/admin');  // Will be used later for auth
 const { db } = require('../../firebase/admin');
 
 // Endpoint to create a new media post
-router.post('/', auth, async (req, res) => {
+router.post('/', /* auth, */ async (req, res) => {
     try {
         const { 
             spotifyTrackId,  // This will come from frontend after user selects a song
@@ -14,13 +14,14 @@ router.post('/', auth, async (req, res) => {
             genres
         } = req.body;
 
-        // Get the authenticated user's ID from the auth middleware
-        const userId = req.user.uid;
+        // For prototype: use a default user ID 
+        // req.user.uid: In production, this should be the authenticated user's ID
+        const userId = 'prototype-user-1';
 
         // Create the post document
         const newPost = {
             creatorId: userId,
-            spotifyTrackId,
+            TrackId: spotifyTrackId,
             imageUrl,
             caption,
             tags,
